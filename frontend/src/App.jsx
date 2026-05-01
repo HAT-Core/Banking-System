@@ -1,7 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminEmployees from './pages/admin/AdminEmployees';
+import AdminCustomers from './pages/admin/AdminCustomers';
+import AdminCatalogs from './pages/admin/AdminCatalogs';
 
 function App() {
   return (
@@ -10,8 +15,13 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         
-        {/* */}
-        <Route path="/register" element={<RegisterPage />} /> 
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="employees" element={<AdminEmployees />} />
+          <Route path="customers" element={<AdminCustomers />} />
+          {<Route path="catalogs" element={<AdminCatalogs />} />}
+        </Route>
         
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
