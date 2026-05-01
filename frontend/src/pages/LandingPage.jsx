@@ -3,7 +3,6 @@ import { Box, Typography, Button, Container } from '@mui/material';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-// --- Animated floating card component ---
 const PlanCard = ({ plan, price, dark, style }) => (
   <Box
     sx={{
@@ -39,7 +38,6 @@ const PlanCard = ({ plan, price, dark, style }) => (
     >
       {plan}
     </Typography>
-    {/* Barcode-style lines */}
     <Box sx={{ display: 'flex', gap: '3px', mb: 2 }}>
       {[3, 1, 2, 1, 3, 2, 1, 3, 2, 1, 2, 3, 1, 2, 1, 3, 2, 1, 2, 3].map(
         (w, i) => (
@@ -124,7 +122,6 @@ export default function LandingPage() {
         fontFamily: '"SF Pro Display", "Roboto", sans-serif',
       }}
     >
-      {/* Radial green glow background */}
       <Box
         sx={{
           position: 'fixed',
@@ -139,7 +136,6 @@ export default function LandingPage() {
         }}
       />
 
-      {/* ─────────────── NAVBAR ─────────────── */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -166,7 +162,6 @@ export default function LandingPage() {
                 py: 2,
               }}
             >
-              {/* Logo */}
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Box
                   sx={{
@@ -184,11 +179,10 @@ export default function LandingPage() {
                   </Typography>
                 </Box>
                 <Typography sx={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
-                  NexaBank
+                  HATCoreBank
                 </Typography>
               </Box>
 
-              {/* Nav links */}
               <Box
                 sx={{
                   display: { xs: 'none', md: 'flex' },
@@ -212,28 +206,16 @@ export default function LandingPage() {
                 ))}
               </Box>
 
-              {/* CTAs */}
               <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
                 <Button
                   onClick={() => navigate('/login')}
-                  sx={{
-                    color: 'rgba(255,255,255,0.7)',
-                    fontSize: 14,
-                    textTransform: 'none',
-                    '&:hover': { color: '#fff', background: 'transparent' },
-                  }}
-                >
-                  Sign In
-                </Button>
-                <Button
-                  onClick={() => navigate('/register')}
                   variant="contained"
                   sx={{
                     background: '#9FFF98',
                     color: '#0E0E0E',
                     fontWeight: 700,
                     fontSize: 14,
-                    px: 2.5,
+                    px: 3,
                     py: 1,
                     borderRadius: '10px',
                     textTransform: 'none',
@@ -244,7 +226,7 @@ export default function LandingPage() {
                     },
                   }}
                 >
-                  Sign Up
+                  Sign In
                 </Button>
               </Box>
             </Box>
@@ -252,7 +234,6 @@ export default function LandingPage() {
         </Box>
       </motion.div>
 
-      {/* ─────────────── HERO ─────────────── */}
       <Box
         sx={{
           position: 'relative',
@@ -272,7 +253,6 @@ export default function LandingPage() {
               alignItems: 'center',
             }}
           >
-            {/* Left: text */}
             <motion.div style={{ y: heroY }}>
               <Box>
                 <motion.div
@@ -307,7 +287,7 @@ export default function LandingPage() {
                       }}
                     />
                     <Typography sx={{ fontSize: 12, color: '#9FFF98', letterSpacing: 0.5 }}>
-                      Now open for early access
+                      Secure Banking Portal
                     </Typography>
                   </Box>
                 </motion.div>
@@ -372,7 +352,7 @@ export default function LandingPage() {
                     }}
                   >
                     From easy money management, to travel perks and investments.
-                    Open your account in a flash.
+                    Access your secure portal instantly.
                   </Typography>
                 </motion.div>
 
@@ -383,7 +363,7 @@ export default function LandingPage() {
                 >
                   <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                     <Button
-                      onClick={() => navigate('/register')}
+                      onClick={() => navigate('/login')}
                       variant="contained"
                       sx={{
                         background: '#9FFF98',
@@ -403,7 +383,7 @@ export default function LandingPage() {
                         },
                       }}
                     >
-                      Try Now
+                      Sign In
                     </Button>
                     <Button
                       sx={{
@@ -427,7 +407,6 @@ export default function LandingPage() {
               </Box>
             </motion.div>
 
-            {/* Right: floating cards */}
             <motion.div style={{ y: cardsY }}>
               <Box sx={{ position: 'relative', height: 420, display: { xs: 'none', md: 'block' } }}>
                 <motion.div
@@ -475,7 +454,6 @@ export default function LandingPage() {
             </motion.div>
           </Box>
 
-          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -499,7 +477,6 @@ export default function LandingPage() {
         </Container>
       </Box>
 
-      {/* ─────────────── FEATURES STRIP ─────────────── */}
       <Box
         sx={{
           position: 'relative',
@@ -575,7 +552,6 @@ export default function LandingPage() {
         </Container>
       </Box>
 
-      {/* ─────────────── BOTTOM CTA ─────────────── */}
       <Box sx={{ position: 'relative', zIndex: 1, py: 14, textAlign: 'center' }}>
         <Box
           sx={{
@@ -610,10 +586,10 @@ export default function LandingPage() {
             <Typography
               sx={{ color: 'rgba(255,255,255,0.45)', fontSize: 16, mb: 5 }}
             >
-              Join millions already banking smarter with NexaBank.
+              Join millions already banking smarter with HATCoreBank.
             </Typography>
             <Button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/login')}
               variant="contained"
               size="large"
               sx={{
@@ -632,7 +608,7 @@ export default function LandingPage() {
                 },
               }}
             >
-              Open Free Account
+              Access Your Account
             </Button>
           </motion.div>
         </Container>
