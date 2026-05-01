@@ -80,5 +80,54 @@ const registerUser = async (req, res) => {
         res.status(500).json({ message: "Server error during registration." });
     }
 };
+const loginUser = async (req, res) => {
+    try {
+        const { username, password } = req.body;
 
-module.exports = { registerUser };
+        const request = new sql.Request();
+        request.input('username', sql.VarChar, username);
+        
+        const result = await request.query(`
+            SELECT user_id, username, password_hash, role, status 
+            FROM user_account 
+            WHERE username = @username
+        `);
+
+        if (result.recordset.length === 0) {
+            return res.status(401).json({ message: "Invalid username or password." });
+        }
+
+        const user = result.recordset[0];
+
+        if (user.status === 'locked') {
+            return res.status(403).json({ message: "Your account is locked. Please contact support." });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password_hash);
+        
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid username or password." });
+        }
+
+        const token = jwt.sign(
+            { userId: user.user_id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1d' }
+        );
+
+        res.status(200).json({
+            message: "Login successful!",
+            token: token,
+            user: {
+                userId: user.user_id,
+                username: user.username,
+                role: user.role
+            }
+        });
+
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({ message: "Server error during login." });
+    }
+};
+module.exports = {registerUser, loginUser};
