@@ -5,7 +5,7 @@ const {connectDB} = require('./config/db');
 const app = express();
 
 app.use(express.json());
-
+app.use('/api/auth',require('./routes/authRoutes'));
 connectDB();
 
 app.listen(process.env.PORT, ()=>{
