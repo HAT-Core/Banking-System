@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
-// Reusable styling for our dark glassmorphism inputs
 const inputSx = {
   '& .MuiOutlinedInput-root': {
     background: 'rgba(255,255,255,0.04)',
@@ -25,19 +24,19 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  // The Master Role State
   const [role, setRole] = useState('customer');
 
-  // Form Data States
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
     username: '',
     password: '',
     cnic: '',
     dob: '',
     phone: '',
     address: '',
-    jobTitle: ''
+    jobTitle: '',
+    employeeCode: ''
   });
 
   const handleChange = (e) => {
@@ -46,7 +45,6 @@ export default function RegisterPage() {
 
   const handleRegister = () => {
     setLoading(true);
-    // Here is where we will eventually send the JSON box to your Node server!
     console.log("Payload to send to DB:", { role, ...formData });
     setTimeout(() => setLoading(false), 1500);
   };
@@ -60,7 +58,6 @@ export default function RegisterPage() {
         fontFamily: '"SF Pro Display", "Roboto", sans-serif',
       }}
     >
-      {/* ── Left Panel: Branding ── */}
       <Box
         sx={{
           flex: 1,
@@ -97,10 +94,9 @@ export default function RegisterPage() {
           </Box>
         </motion.div>
         
-        <Box /> {/* Empty box for spacing */}
+        <Box />
       </Box>
 
-      {/* ── Right Panel: Registration Form ── */}
       <Box sx={{ flex: { xs: 1, md: '0 0 520px' }, display: 'flex', flexDirection: 'column', justifyContent: 'center', px: { xs: 4, md: 7 }, py: 6, overflowY: 'auto' }}>
         <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
           <Box sx={{ maxWidth: 400, width: '100%', mx: 'auto' }}>
@@ -112,7 +108,6 @@ export default function RegisterPage() {
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
               
-              {/* 1. Master Role Selector */}
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                 <FormControl fullWidth sx={inputSx}>
                   <InputLabel id="role-select-label">Account Type</InputLabel>
@@ -129,26 +124,44 @@ export default function RegisterPage() {
                   </Select>
                 </FormControl>
               </motion.div>
-{/* 2. Universal Fields (EVERYONE gets these now) */}
+
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <TextField name="firstName" label="First Name" variant="outlined" fullWidth sx={inputSx} onChange={handleChange} />
+                  <TextField name="lastName" label="Last Name" variant="outlined" fullWidth sx={inputSx} onChange={handleChange} />
+                </Box>
+                
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <TextField name="username" label="Username" variant="outlined" fullWidth sx={inputSx} onChange={handleChange} />
                   <TextField 
-                    name="password" label="Password" type={showPassword ? 'text' : 'password'} fullWidth sx={inputSx} onChange={handleChange}
-                    InputProps={{ /* ... keep your eye icon code here ... */ }}
+                    name="password" 
+                    label="Password" 
+                    type={showPassword ? 'text' : 'password'} 
+                    fullWidth 
+                    sx={inputSx} 
+                    onChange={handleChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{ color: 'rgba(255,255,255,0.3)', '&:hover': { color: '#9FFF98' } }}>
+                            {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Box>
                 
-                {/* MOVED FROM CUSTOMER: Identity Fields are now Universal */}
                 <TextField name="cnic" label="CNIC Number" variant="outlined" fullWidth sx={inputSx} onChange={handleChange} />
+                
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <TextField name="dob" label="Date of Birth" type="date" InputLabelProps={{ shrink: true }} fullWidth sx={inputSx} onChange={handleChange} />
                   <TextField name="phone" label="Phone Number" variant="outlined" fullWidth sx={inputSx} onChange={handleChange} />
                 </Box>
+                
                 <TextField name="address" label="Residential Address" variant="outlined" multiline rows={2} fullWidth sx={inputSx} onChange={handleChange} />
               </Box>
 
-              {/* 3. The Dynamic Architecture (Only Job Title remains conditional) */}
               <AnimatePresence mode="popLayout">
                 {role === 'employee' && (
                   <motion.div
@@ -158,14 +171,14 @@ export default function RegisterPage() {
                     exit={{ opacity: 0, height: 0, y: -10 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Box sx={{ mt: 2.5 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, mt: 0.5 }}>
                       <TextField name="jobTitle" label="Official Job Title" variant="outlined" fullWidth sx={inputSx} onChange={handleChange} />
+                      <TextField name="employeeCode" label="Employee Secret Code" type="password" variant="outlined" fullWidth sx={inputSx} onChange={handleChange} />
                     </Box>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* Submit Button */}
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
                 <Button
                   onClick={handleRegister}
@@ -190,7 +203,6 @@ export default function RegisterPage() {
                 </Button>
               </motion.div>
 
-              {/* Back to Login */}
               <Box sx={{ textAlign: 'center', mt: 1 }}>
                 <Typography sx={{ fontSize: 14, color: 'rgba(255,255,255,0.4)' }}>
                   Already have an account?{' '}

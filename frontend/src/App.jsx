@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage'; // 1. Import it here
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         
-        {/* 2. Add the new route here */}
+        {/* */}
         <Route path="/register" element={<RegisterPage />} /> 
         
         <Route path="*" element={<Navigate to="/" replace />} />
