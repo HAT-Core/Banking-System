@@ -170,7 +170,7 @@ export default function AdminLayout() {
               <Typography sx={{fontSize: 12, color: '#4ADE80', fontWeight: 600, letterSpacing: 0.5, whiteSpace: 'nowrap' }}>System Secure</Typography>
             </Box>
             
-            <Box sx={{width: 1, height: 24, background: 'rgba(255,255,255,0.1)', flexShrink: 0 }} />
+            <Box sx={{width: '1px', height: 24, background: 'rgba(255,255,255,0.1)', flexShrink: 0 }} />
             
             <Box sx={{display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer', '&:hover .MuiTypography-root': {color: '#60A5FA' } }}>
               <Box sx={{textAlign: 'right' }}>
