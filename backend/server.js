@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const {connectDB} = require('./config/db');
+const { runScheduledTransfers } = require('./jobs/scheduledTransferJob');
 const transactionRoutes = require('./routes/transactionRoutes');
 const transferRoutes = require('./routes/transferRoutes');
 const branchRoutes = require('./routes/branchRoutes');
@@ -15,7 +16,9 @@ app.use('/api/admin',require('./routes/adminRoutes'));
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/transfer', transferRoutes);
 app.use('/api/branch', branchRoutes);
+
 connectDB();
+runScheduledTransfers();
 
 app.listen(process.env.PORT, ()=>{
     console.log(`Server running on port ${process.env.PORT}`);
