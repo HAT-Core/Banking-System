@@ -23,13 +23,11 @@ const getInputSx = (themeColor) => ({
 export default function LoginPage() {
   const navigate = useNavigate();
   
-  //UIState
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loginType, setLoginType] = useState('customer');
   const [errorMsg, setErrorMsg] = useState('');
 
-  //Form State
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -46,11 +44,9 @@ export default function LoginPage() {
       const response = await api.post('/auth/login', {username, password });
       const {token, user } = response.data;
 
-      //Save token and user details to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      //Role-based routing validation
       if (user.role === 'admin' || user.role === 'employee') {
         if (loginType === 'customer') {
            console.warn("Staff logged in via Personal portal. Redirecting to secure portal.");
@@ -67,8 +63,8 @@ export default function LoginPage() {
         }
         navigate('/dashboard'); 
       }
-
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Login failed:", error);
       if (error.response && error.response.data) {
         setErrorMsg(error.response.data.message);
@@ -76,7 +72,8 @@ export default function LoginPage() {
       else{
         setErrorMsg("Cannot connect to server. Please try again later.");
       }
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
   };
@@ -169,7 +166,6 @@ export default function LoginPage() {
               </Box>
             </Box>
 
-            {/* Error Message Display */}
             {errorMsg && (
               <Alert severity="error" sx={{mb: 3, background: 'rgba(239,68,68,0.05)', color: '#F87171', border: '1px solid rgba(239,68,68,0.2)', '& .MuiAlert-icon': {color: '#F87171' } }}>
                 {errorMsg}
@@ -184,6 +180,7 @@ export default function LoginPage() {
                   fullWidth
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
                   sx={getInputSx(themeColor)}
                 />
               </motion.div>
@@ -196,6 +193,7 @@ export default function LoginPage() {
                   fullWidth
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
                   sx={getInputSx(themeColor)}
                   InputProps={{
                     endAdornment: (
