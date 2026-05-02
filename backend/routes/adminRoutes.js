@@ -1,16 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { protect, authorizeAdmin } = require('../middleware/authMiddleware');
+const {protect,authorizeAdmin} = require('../middleware/authMiddleware');
 
-// We will import the controllers here later
-// const { getBanks, addBank, getEmployees, updateStatus } = require('../controllers/adminController');
+const {getBanks,addBank,getBillers,addBiller,getLoans,updateLoanRate,getEmployees,
+     getCustomers,updateUserStatus} = require('../controllers/adminController');
 
-// --- SYSTEM CATALOG ROUTES ---
-// router.get('/banks', protect, authorizeAdmin, getBanks);
-// router.post('/banks', protect, authorizeAdmin, addBank);
+router.get('/catalogs/banks',protect,authorizeAdmin,getBanks);
+router.post('/catalogs/banks',protect,authorizeAdmin,addBank);
 
-// --- USER MANAGEMENT ROUTES ---
-// router.get('/users/employees', protect, authorizeAdmin, getEmployees);
-// router.put('/users/:id/status', protect, authorizeAdmin, updateStatus);
+router.get('/catalogs/billers',protect,authorizeAdmin,getBillers);
+router.post('/catalogs/billers',protect,authorizeAdmin,addBiller);
+
+router.get('/catalogs/loans',protect,authorizeAdmin,getLoans);
+router.put('/catalogs/loans/:id',protect,authorizeAdmin,updateLoanRate);
+
+router.get('/users/employees',protect,authorizeAdmin,getEmployees);
+router.get('/users/customers',protect,authorizeAdmin,getCustomers);
+router.put('/users/:id/status',protect,authorizeAdmin,updateUserStatus);
 
 module.exports = router;
