@@ -30,6 +30,26 @@ const getBanks = async(req, res)=>{
         res.status(500).json({message: "Failed to fetch bank catalog."});
     }
 };
+const getBillers = async(req, res)=>{
+    try{
+        const result = await sql.query(`SELECT * FROM biller ORDER BY name ASC`);
+        res.status(200).json(result.recordset);
+    }
+    catch(error){
+        console.error("Get billers error:", error);
+        res.status(500).json({message: "Failed to fetch biller catalog."});
+    }
+};
+const getLoans = async(req, res)=>{
+    try{
+        const result = await sql.query(`SELECT * FROM loan_type ORDER BY type_name ASC`);
+        res.status(200).json(result.recordset);
+    }
+    catch(error){
+        console.error("Get loans error:", error);
+        res.status(500).json({message: "Failed to fetch loan catalog."});
+    }
+};
 
 const addBiller = async(req, res)=>{
     try{
@@ -58,11 +78,13 @@ const addBiller = async(req, res)=>{
 
 const updateLoanRate = async(req, res)=>{
     try{
-        const {loanTypeId, newRate} = req.body;
+        const {id} = req.params; 
+        const {interestRate} = req.body; 
+        
         const request = new sql.Request();
         
-        request.input('newRate', sql.Decimal(5, 2), newRate);
-        request.input('loanTypeId', sql.Int, loanTypeId);
+        request.input('newRate', sql.Decimal(5, 2), interestRate);
+        request.input('loanTypeId', sql.Int, id);
 
         await request.query(`
             UPDATE loan_type 
@@ -77,7 +99,6 @@ const updateLoanRate = async(req, res)=>{
         res.status(500).json({message: "Failed to update loan rate."});
     }
 };
-
 const getEmployees = async(req, res)=>{
     try {
         const result = await sql.query(`
@@ -143,4 +164,5 @@ const updateUserStatus = async(req, res)=>{
     }
 };
 
-module.exports = {addBank,getBanks,addBiller,updateLoanRate,getEmployees,getCustomers,updateUserStatus};
+
+module.exports = {addBank, getBanks, addBiller, getBillers, updateLoanRate, getLoans, getEmployees, getCustomers, updateUserStatus};
