@@ -1,7 +1,6 @@
 const sql = require('mssql');
 const db = require('../config/db');
 
-// POST /api/transfer/intra — move money between two accounts in the same bank
 const intraTransfer = async (req, res) => {
   const { fromAccountId, toAccountId, amount } = req.body;
   const userId = req.user.userId;
@@ -18,7 +17,6 @@ const intraTransfer = async (req, res) => {
   try {
     await transaction.begin();
 
-    // Verify sender owns the from-account
     const ownerCheck = new sql.Request(transaction);
     ownerCheck.input('fromAccountId', sql.Int, fromAccountId);
     ownerCheck.input('userId', sql.Int, userId);
@@ -46,7 +44,6 @@ const intraTransfer = async (req, res) => {
       return res.status(400).json({ message: 'Insufficient funds.' });
     }
 
-    // Verify recipient account exists and is active
     const recipientCheck = new sql.Request(transaction);
     recipientCheck.input('toAccountId', sql.Int, toAccountId);
     const recipientResult = await recipientCheck.query(`
@@ -58,7 +55,6 @@ const intraTransfer = async (req, res) => {
       return res.status(404).json({ message: 'Recipient account not found or inactive.' });
     }
 
-    // Deduct from sender
     const deduct = new sql.Request(transaction);
     deduct.input('amount', sql.Decimal(18, 2), amount);
     deduct.input('fromAccountId', sql.Int, fromAccountId);
@@ -66,7 +62,6 @@ const intraTransfer = async (req, res) => {
       UPDATE account SET balance = balance - @amount WHERE account_id = @fromAccountId
     `);
 
-    // Add to receiver
     const credit = new sql.Request(transaction);
     credit.input('amount', sql.Decimal(18, 2), amount);
     credit.input('toAccountId', sql.Int, toAccountId);
@@ -74,15 +69,16 @@ const intraTransfer = async (req, res) => {
       UPDATE account SET balance = balance + @amount WHERE account_id = @toAccountId
     `);
 
-    // Log in transactions table
     const log = new sql.Request(transaction);
     log.input('fromAccountId', sql.Int, fromAccountId);
     log.input('toAccountId', sql.Int, toAccountId);
     log.input('amount', sql.Decimal(18, 2), amount);
+    
+    // PATCHED: Changed 'transfer' to 'internal_transfer' and 'completed' to 'success'
     const logResult = await log.query(`
       INSERT INTO transactions (from_account, to_account, amount, transaction_type, status, transaction_date)
       OUTPUT INSERTED.transaction_id
-      VALUES (@fromAccountId, @toAccountId, @amount, 'transfer', 'completed', GETDATE())
+      VALUES (@fromAccountId, @toAccountId, @amount, 'internal_transfer', 'success', GETDATE())
     `);
 
     await transaction.commit();
