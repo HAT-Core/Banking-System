@@ -12,6 +12,9 @@ import CustomerLayout from './pages/customer/CustomerLayout';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import TransactionHistory from './pages/customer/TransactionHistory';
 import Transfers from './pages/customer/Transfers';
+import CustomerLoans      from './pages/customer/CustomerLoans';
+import CustomerBilling    from './pages/customer/CustomerBilling';
+
 
 import EmployeeLayout      from './pages/employee/EmployeeLayout';
 import EmployeeKycQueue    from './pages/employee/EmployeeKycQueue';
@@ -38,6 +41,8 @@ function App() {
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/transactions" element={<TransactionHistory />} />
           <Route path="/transfers" element={<Transfers />} />
+	  <Route path="/loans"        element={<CustomerLoans />} />
+          <Route path="/billing"      element={<CustomerBilling />} />
         </Route>
 
         <Route path="/employee" element={<EmployeeLayout />}>
