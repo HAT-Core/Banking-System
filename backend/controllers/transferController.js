@@ -1,5 +1,4 @@
-const sql = require('mssql');
-const db = require('../config/db');
+const { sql } = require('../config/db');
 
 const intraTransfer = async (req, res) => {
   const { fromAccountId, toAccountId, amount } = req.body;
@@ -11,8 +10,7 @@ const intraTransfer = async (req, res) => {
   if (fromAccountId === toAccountId)
     return res.status(400).json({ message: 'Cannot transfer to the same account.' });
 
-  const pool = await db.getPool();
-  const transaction = new sql.Transaction(pool);
+  const transaction = new sql.Transaction();
 
   try {
     await transaction.begin();
@@ -100,8 +98,7 @@ const interTransfer = async (req, res) => {
   if (!fromAccountId || !amount || !toBankId || !toAccountNumber || amount <= 0)
     return res.status(400).json({ message: 'Invalid transfer details.' });
 
-  const pool = await db.getPool();
-  const transaction = new sql.Transaction(pool);
+  const transaction = new sql.Transaction();
 
   try {
     await transaction.begin();
