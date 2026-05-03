@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Skeleton, Chip } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import TrendingDownRoundedIcon from '@mui/icons-material/TrendingDownRounded';
 import AccountBalanceWalletRoundedIcon from '@mui/icons-material/AccountBalanceWalletRounded';
@@ -32,6 +33,7 @@ export default function CustomerDashboard() {
   const [transactions, setTx]       = useState([]);
   const [loading, setLoading]       = useState(true);
   const [error, setError]           = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const load = async () => {
@@ -147,7 +149,7 @@ export default function CustomerDashboard() {
       <Box sx={{ background: 'rgba(20,20,20,0.7)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', overflow: 'hidden' }}>
         <Box sx={{ px: 3, py: 2.5, borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography sx={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>Recent Transactions</Typography>
-          <Typography sx={{ fontSize: 13, color: '#9FFF98', cursor: 'pointer', '&:hover': { opacity: 0.7 } }}>
+          <Typography onClick={() => navigate('/transactions')} sx={{ fontSize: 13, color: '#9FFF98', cursor: 'pointer', '&:hover': { opacity: 0.7 } }}>
             View all →
           </Typography>
         </Box>
