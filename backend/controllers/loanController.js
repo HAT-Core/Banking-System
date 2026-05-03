@@ -4,14 +4,12 @@ const createLoan = async (req, res) => {
     const transaction = new sql.Transaction();
 
     try {
-        // 1. Restrict to Staff (System Architecture Guide Rule 3)
         if (req.user.role !== 'employee' && req.user.role !== 'admin') {
             return res.status(403).json({ message: "Forbidden: Only authorized staff can issue loans." });
         }
 
         const { accountId, loanTypeId, amount, durationMonths } = req.body;
 
-        // 2. Safely capture the employee's ID for the audit trail
         const request = new sql.Request();
         request.input('userId', sql.Int, req.user.userId);
         const empResult = await request.query(`SELECT employee_id FROM employee WHERE user_id = @userId`);
@@ -24,7 +22,6 @@ const createLoan = async (req, res) => {
         await transaction.begin();
         const txRequest = new sql.Request(transaction);
 
-        // Step A: Insert into loan table
         txRequest.input('accountId', sql.Int, accountId);
         txRequest.input('loanTypeId', sql.Int, loanTypeId);
         txRequest.input('employeeId', sql.Int, employeeId);
@@ -40,7 +37,6 @@ const createLoan = async (req, res) => {
         const newLoanId = loanResult.recordset[0].loan_id;
         const installmentAmount = (amount / durationMonths).toFixed(2);
 
-        // Step B: Generate installment rows
         for (let i = 1; i <= durationMonths; i++) {
             const instRequest = new sql.Request(transaction);
             instRequest.input('loanId', sql.Int, newLoanId);
@@ -81,7 +77,6 @@ const payInstallment = async (req, res) => {
         request.input('installmentId', sql.Int, installmentId);
         request.input('userId', sql.Int, req.user.userId);
 
-        // 1. Fetch installment, account details, and strictly verify ownership
         const instResult = await request.query(`
             SELECT i.amount, i.status, l.account_id, a.balance, c.user_id 
             FROM installment i
@@ -98,7 +93,6 @@ const payInstallment = async (req, res) => {
 
         const { amount, status, account_id, balance, user_id } = instResult.recordset[0];
 
-        // Ensure the logged-in customer actually owns this loan
         if (user_id !== req.user.userId) {
             await transaction.rollback();
             return res.status(403).json({ message: "Forbidden: You do not own this loan." });
@@ -117,14 +111,12 @@ const payInstallment = async (req, res) => {
         request.input('accountId', sql.Int, account_id);
         request.input('amount', sql.Decimal(15, 2), amount);
 
-        // 2. Deduct from account balance
         await request.query(`
             UPDATE account 
             SET balance = balance - @amount 
             WHERE account_id = @accountId
         `);
 
-        // 3. Insert into transactions table (Matches TransactionController's 'success' query logic)
         const txResult = await request.query(`
             INSERT INTO transactions (from_account, to_account, amount, transaction_type, status)
             OUTPUT INSERTED.transaction_id
@@ -134,7 +126,6 @@ const payInstallment = async (req, res) => {
         const newTransactionId = txResult.recordset[0].transaction_id;
         request.input('transactionId', sql.Int, newTransactionId);
 
-        // 4. Update installment to 'paid' and link the transaction
         await request.query(`
             UPDATE installment 
             SET status = 'paid', 

@@ -17,7 +17,6 @@ const addSubscription = async (req, res) => {
 
         const request = new sql.Request();
         
-        // Security Check: Ensure the user actually owns this account
         request.input('accountId', sql.Int, accountId);
         request.input('userId', sql.Int, userId);
         const ownershipCheck = await request.query(`
@@ -92,7 +91,6 @@ const payBill = async (req, res) => {
         request.input('billId', sql.Int, billId);
         request.input('userId', sql.Int, userId);
 
-        // 1. Fetch Bill & Account details, strictly verifying ownership
         const billResult = await request.query(`
             SELECT b.amount, b.status, a.account_id, a.balance 
             FROM bill b
@@ -122,14 +120,12 @@ const payBill = async (req, res) => {
         request.input('accountId', sql.Int, account_id);
         request.input('amount', sql.Decimal(15, 2), amount);
 
-        // Step A: Deduct from account balance
         await request.query(`
             UPDATE account 
             SET balance = balance - @amount 
             WHERE account_id = @accountId
         `);
 
-        // Step B & C: Update bill status and log transaction (Matching TransactionController format perfectly)
         const txResult = await request.query(`
             INSERT INTO transactions (from_account, to_account, amount, transaction_type, status)
             OUTPUT INSERTED.transaction_id
@@ -144,8 +140,6 @@ const payBill = async (req, res) => {
             SET status = 'paid' 
             WHERE bill_id = @billId
         `);
-
-        // Step D: Insert record into bill_payment
         await request.query(`
             INSERT INTO bill_payment (bill_id, transaction_id, result)
             VALUES (@billId, @transactionId, 'success')
