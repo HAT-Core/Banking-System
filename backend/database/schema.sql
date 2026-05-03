@@ -77,7 +77,6 @@ CREATE TABLE supported_bank (
 CREATE TABLE interbank_transfer (
     ib_transfer_id INT PRIMARY KEY IDENTITY(1,1),
     transaction_id INT NOT NULL UNIQUE REFERENCES transactions(transaction_id),
-    from_bank_id INT NOT NULL REFERENCES supported_bank(bank_id),
     from_account_number VARCHAR(30) NOT NULL,
     to_bank_id INT NOT NULL REFERENCES supported_bank(bank_id),
     to_account_number VARCHAR(30) NOT NULL,

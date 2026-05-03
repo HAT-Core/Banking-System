@@ -160,17 +160,16 @@ const interTransfer = async (req, res) => {
     const transactionId = txResult.recordset[0].transaction_id;
 
     const ibReq = new sql.Request(transaction);
-    ibReq.input('transactionId', sql.Int, transactionId);
-    ibReq.input('fromBankId', sql.Int, parseInt(process.env.OWN_BANK_ID));
-    ibReq.input('fromAccountNumber', sql.VarChar(30), sender.account_number);
-    ibReq.input('toBankId', sql.Int, toBankId);
-    ibReq.input('toAccountNumber', sql.VarChar(30), toAccountNumber);
-    await ibReq.query(`
-      INSERT INTO interbank_transfer 
-        (transaction_id, from_bank_id, from_account_number, to_bank_id, to_account_number, settlement_status)
-      VALUES 
-        (@transactionId, @fromBankId, @fromAccountNumber, @toBankId, @toAccountNumber, 'pending')
-    `);
+      ibReq.input('transactionId', sql.Int, transactionId);
+      ibReq.input('fromAccountNumber', sql.VarChar(30), sender.account_number);
+      ibReq.input('toBankId', sql.Int, toBankId);
+      ibReq.input('toAccountNumber', sql.VarChar(30), toAccountNumber);
+      await ibReq.query(`
+          INSERT INTO interbank_transfer 
+              (transaction_id, from_account_number, to_bank_id, to_account_number, settlement_status)
+          VALUES 
+              (@transactionId, @fromAccountNumber, @toBankId, @toAccountNumber, 'pending')
+      `);
 
     await transaction.commit();
 
