@@ -9,7 +9,6 @@ CREATE TABLE user_account (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     cnic VARCHAR(13) NOT NULL UNIQUE CHECK (LEN(cnic) = 13),
-    -- BCNF FIX: Added UNIQUE constraint to phone
     phone VARCHAR(15) NOT NULL UNIQUE CHECK (LEN(phone) = 11 AND phone LIKE '03%'),
     address VARCHAR(255) NOT NULL,
     date_of_birth DATE NOT NULL CHECK (DATEDIFF(YEAR, date_of_birth, GETDATE()) >= 18)
