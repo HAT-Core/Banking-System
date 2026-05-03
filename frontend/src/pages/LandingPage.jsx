@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Box, Typography, Button, Container } from '@mui/material';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 
 const CreditCard = ({variant, style}) => {
   const isGold = variant === 'gold';
@@ -189,9 +190,7 @@ export default function LandingPage() {
                     justifyContent: 'center',
                   }}
                 >
-                  <Typography sx={{ fontSize: 18, color: '#0E0E0E', fontWeight: 900 }}>
-                    ✦
-                  </Typography>
+                  <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
                 </Box>
                 <Typography sx={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
                   HATCoreBank

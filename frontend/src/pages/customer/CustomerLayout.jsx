@@ -7,6 +7,7 @@ import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 
 const NAV_ITEMS = [
   { label: 'Dashboard',           path: '/dashboard',            icon: <DashboardRoundedIcon fontSize="small" /> },
@@ -44,7 +45,7 @@ export default function CustomerLayout() {
         {/* Logo */}
         <Box sx={{ p: 4, display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
           <Box sx={{ width: 36, height: 36, background: '#9FFF98', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(159,255,152,0.4)' }}>
-            <Typography sx={{ fontSize: 18, color: '#0E0E0E', fontWeight: 900 }}>✦</Typography>
+            <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
           </Box>
           <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: -0.5 }}>HATCore</Typography>
         </Box>

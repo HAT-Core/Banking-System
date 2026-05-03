@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 
 const inputSx = {
   '& .MuiOutlinedInput-root': {
@@ -76,7 +77,7 @@ export default function RegisterPage() {
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => navigate('/')}>
             <Box sx={{ width: 38, height: 38, background: '#9FFF98', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Typography sx={{ fontSize: 18, color: '#0E0E0E', fontWeight: 900 }}>✦</Typography>
+              <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
             </Box>
             <Typography sx={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>NexaBank</Typography>
           </Box>

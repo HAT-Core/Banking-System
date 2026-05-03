@@ -4,6 +4,7 @@ import {motion, AnimatePresence } from 'framer-motion';
 import {useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 import api from './utils/api'; 
 
 const getInputSx = (themeColor) => ({
@@ -93,7 +94,7 @@ export default function LoginPage() {
         <motion.div initial={{opacity: 0, y: -20 }} animate={{opacity: 1, y: 0 }} transition={{duration: 0.6 }}>
           <Box sx={{display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => navigate('/')}>
             <Box sx={{width: 38, height: 38, background: themeColor, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.5s ease' }}>
-              <Typography sx={{fontSize: 18, color: '#0E0E0E', fontWeight: 900 }}>✦</Typography>
+              <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
             </Box>
             <Typography sx={{fontSize: 18, fontWeight: 700, color: '#fff' }}>HATCoreBank</Typography>
           </Box>
@@ -146,7 +147,7 @@ export default function LoginPage() {
             <Box sx={{mb: 4 }}>
               <Box sx={{display: {xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1.5, mb: 5 }}>
                 <Box sx={{width: 34, height: 34, background: themeColor, borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.5s ease' }}>
-                  <Typography sx={{fontSize: 16, color: '#0E0E0E', fontWeight: 900 }}>✦</Typography>
+                  <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
                 </Box>
                 <Typography sx={{fontSize: 17, fontWeight: 700, color: '#fff' }}>HATCoreBank</Typography>
               </Box>

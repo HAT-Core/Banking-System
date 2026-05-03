@@ -5,6 +5,7 @@ import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import PointOfSaleRoundedIcon from '@mui/icons-material/PointOfSaleRounded';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 
 const ACCENT       = '#9FFF98';
 const ACCENT_DIM   = 'rgba(159,255,152,0.12)';
@@ -50,7 +51,7 @@ export default function EmployeeLayout() {
         {/* Logo */}
         <Box sx={{ p: 4, display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
           <Box sx={{ width: 36, height: 36, background: `linear-gradient(135deg, ${ACCENT} 0%, #4ADE80 100%)`, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 0 20px ${ACCENT_GLOW}` }}>
-            <Typography sx={{ fontSize: 18, color: '#0A0A0A', fontWeight: 900 }}>✦</Typography>
+            <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
           </Box>
           <Typography sx={{ fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: -0.5 }}>HATCore</Typography>
         </Box>

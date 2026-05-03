@@ -6,6 +6,7 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 
 const NAV_ITEMS = [
   {label: 'Overview', path: '/admin/dashboard', icon: <DashboardRoundedIcon fontSize="small" /> },
@@ -79,7 +80,7 @@ export default function AdminLayout() {
               boxShadow: '0 0 20px rgba(96,165,250,0.4)'
             }}
           >
-            <Typography sx={{fontSize: 18, color: '#fff', fontWeight: 900 }}>✦</Typography>
+            <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
           </Box>
           <Typography sx={{fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: -0.5 }}>HATCore</Typography>
         </Box>
