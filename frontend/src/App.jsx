@@ -11,6 +11,7 @@ import AdminCatalogs from './pages/admin/AdminCatalogs';
 import CustomerLayout from './pages/customer/CustomerLayout';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import TransactionHistory from './pages/customer/TransactionHistory';
+import Transfers from './pages/customer/Transfers';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route element={<CustomerLayout />}>
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/transactions" element={<TransactionHistory />} />
+          <Route path="/transfers" element={<Transfers />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
