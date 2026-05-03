@@ -6,7 +6,7 @@ import AccountBalanceWalletRoundedIcon from '@mui/icons-material/AccountBalanceW
 import SwapHorizRoundedIcon from '@mui/icons-material/SwapHorizRounded';
 import api from '../utils/api';
 
-// ── Stat card ──────────────────────────────────────────────────────────────
+// Stat card 
 const SummaryCard = ({ title, value, icon, color, glow }) => (
   <Box sx={{
     background: 'rgba(20,20,20,0.7)', border: '1px solid rgba(255,255,255,0.05)',
@@ -22,7 +22,7 @@ const SummaryCard = ({ title, value, icon, color, glow }) => (
   </Box>
 );
 
-// ── Format helpers ─────────────────────────────────────────────────────────
+// Format helpers 
 const fmt = (n) => `PKR ${parseFloat(n).toLocaleString('en-PK', { minimumFractionDigits: 2 })}`;
 const fmtDate = (d) => new Date(d).toLocaleDateString('en-PK', { day: '2-digit', month: 'short', year: 'numeric' });
 
