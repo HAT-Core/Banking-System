@@ -106,7 +106,7 @@ CREATE TABLE loan (
     status VARCHAR(10) NOT NULL DEFAULT 'running' CHECK (status IN ('running', 'completed', 'defaulted'))
 );
 
--- 11. installment
+-- 11. intstallment
 CREATE TABLE installment (
     installment_id INT PRIMARY KEY IDENTITY(1,1),
     loan_id INT NOT NULL REFERENCES loan(loan_id),
@@ -114,9 +114,12 @@ CREATE TABLE installment (
     amount DECIMAL(15,2) NOT NULL,
     status VARCHAR(10) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'overdue')),
     paid_date DATE NULL,
-    transaction_id INT UNIQUE REFERENCES transactions(transaction_id)
+    transaction_id INT REFERENCES transactions(transaction_id)
 );
 
+CREATE UNIQUE INDEX UX_installment_transaction_id 
+ON installment(transaction_id) 
+WHERE transaction_id IS NOT NULL;
 -- 12. biller
 CREATE TABLE biller (
     biller_id INT PRIMARY KEY IDENTITY(1,1),
