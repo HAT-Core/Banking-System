@@ -64,7 +64,7 @@ export default function LoginPage() {
           setLoading(false);
           return;
         }
-        navigate('/customer/dashboard'); 
+        navigate('/dashboard'); 
       }
     }
     catch (error) {
