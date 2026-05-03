@@ -3,80 +3,95 @@ import { Box, Typography, Button, Container } from '@mui/material';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const PlanCard = ({ plan, price, dark, style }) => (
-  <Box
-    sx={{
-      width: 200,
-      background: dark ? '#0E0E0E' : '#9FFF98',
-      borderRadius: '20px',
-      padding: '24px',
-      border: dark ? '1px solid rgba(159,255,152,0.15)' : 'none',
-      boxShadow: dark
-        ? '0 30px 60px rgba(0,0,0,0.6)'
-        : '0 30px 60px rgba(159,255,152,0.25)',
-      ...style,
-    }}
-  >
-    <Typography
+const CreditCard = ({variant, style}) => {
+  const isGold = variant === 'gold';
+  const isBlack = variant === 'black';
+
+  const bg = isGold
+    ? 'linear-gradient(135deg, #1a1200 0%, #3d2e00 40%, #1a1200 100%)'
+    : isBlack
+    ? 'linear-gradient(135deg, #0a0a0a 0%, #1c1c1c 50%, #0d0d0d 100%)'
+    : 'linear-gradient(135deg, #0f1a0f 0%, #1a2e1a 50%, #0a150a 100%)';
+
+  const accentColor = isGold ? '#C9A84C' : isBlack ? '#9FFF98' : '#4ADE80';
+  const shimmer = isGold ? 'rgba(201,168,76,0.15)' : 'rgba(159,255,152,0.08)';
+
+  return (
+    <Box
       sx={{
-        fontSize: 11,
-        color: dark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.5)',
-        letterSpacing: 1,
-        textTransform: 'uppercase',
-        mb: 0.5,
+        width: 280,
+        height: 168,
+        background: bg,
+        borderRadius: '16px',
+        padding: '20px 24px',
+        position: 'relative',
+        overflow: 'hidden',
+        border: `1px solid ${isGold ? 'rgba(201,168,76,0.3)' : 'rgba(159,255,152,0.12)'}`,
+        boxShadow: isGold
+          ? '0 30px 60px rgba(0,0,0,0.7), 0 0 40px rgba(201,168,76,0.1)'
+          : '0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(159,255,152,0.06)',
+        ...style,
       }}
     >
-      Plan
-    </Typography>
-    <Typography
-      sx={{
-        fontSize: 22,
-        fontWeight: 700,
-        color: dark ? '#fff' : '#0E0E0E',
-        mb: 2,
-      }}
-    >
-      {plan}
-    </Typography>
-    <Box sx={{ display: 'flex', gap: '3px', mb: 2 }}>
-      {[3, 1, 2, 1, 3, 2, 1, 3, 2, 1, 2, 3, 1, 2, 1, 3, 2, 1, 2, 3].map(
-        (w, i) => (
-          <Box
-            key={i}
-            sx={{
-              width: w,
-              height: 36,
-              borderRadius: 0.5,
-              background: dark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-            }}
-          />
-        )
-      )}
-    </Box>
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Box
-        sx={{
-          width: 28,
-          height: 28,
-          borderRadius: '50%',
-          background: '#9FFF98',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography sx={{ fontSize: 12, color: '#0E0E0E', fontWeight: 700 }}>
-          ₿
+      <Box sx={{position: 'absolute', top: '-40px', right: '-40px', width: 160, height: 160, borderRadius: '50%', background: shimmer, pointerEvents: 'none'}} />
+      <Box sx={{position: 'absolute', bottom: '-60px', left: '-20px', width: 180, height: 180, borderRadius: '50%', background: shimmer, opacity: 0.5, pointerEvents: 'none'}} />
+      <Box sx={{position: 'absolute', inset: 0, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(255,255,255,0.012) 30px, rgba(255,255,255,0.012) 31px), repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.012) 30px, rgba(255,255,255,0.012) 31px)', pointerEvents: 'none'}} />
+
+      <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5}}>
+        <Typography sx={{fontSize: 13, fontWeight: 800, color: accentColor, letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'monospace'}}>
+          HATCore
         </Typography>
+        <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+          <Box sx={{display: 'flex', gap: '2px', mb: 0.3}}>
+            {[0,1,2,3].map(i => (
+              <Box key={i} sx={{width: 14, height: 10, background: accentColor, opacity: 0.7 + i * 0.07, borderRadius: '2px'}} />
+            ))}
+          </Box>
+          <Typography sx={{fontSize: 7, color: accentColor, opacity: 0.6, letterSpacing: 0.5}}>CONTACTLESS</Typography>
+        </Box>
       </Box>
-      <Typography
-        sx={{ fontSize: 13, color: dark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}
-      >
-        {price}/month
-      </Typography>
+
+      <Box sx={{
+        width: 44, height: 34, borderRadius: '6px',
+        background: isGold
+          ? 'linear-gradient(135deg, #C9A84C 0%, #f0d080 40%, #9a7a2a 100%)'
+          : 'linear-gradient(135deg, #b8b8b8 0%, #e0e0e0 40%, #888 100%)',
+        mb: 1.5, position: 'relative', overflow: 'hidden',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
+      }}>
+        <Box sx={{position: 'absolute', top: '30%', left: 0, right: 0, height: '1px', background: 'rgba(0,0,0,0.2)'}} />
+        <Box sx={{position: 'absolute', top: '60%', left: 0, right: 0, height: '1px', background: 'rgba(0,0,0,0.2)'}} />
+        <Box sx={{position: 'absolute', top: '15%', left: '30%', bottom: '15%', width: '1px', background: 'rgba(0,0,0,0.15)'}} />
+        <Box sx={{position: 'absolute', top: '15%', left: '60%', bottom: '15%', width: '1px', background: 'rgba(0,0,0,0.15)'}} />
+      </Box>
+
+      <Box sx={{display: 'flex', gap: 1.5, mb: 1.5, alignItems: 'center'}}>
+        {['••••', '••••', '••••', isGold ? '4291' : isBlack ? '7734' : '1847'].map((group, i) => (
+          <Typography key={i} sx={{fontSize: i === 3 ? 11 : 10, color: i === 3 ? '#fff' : 'rgba(255,255,255,0.5)', fontFamily: 'monospace', letterSpacing: i === 3 ? 1 : 2, fontWeight: i === 3 ? 700 : 400}}>
+            {group}
+          </Typography>
+        ))}
+      </Box>
+
+      <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+        <Box>
+          <Typography sx={{fontSize: 7, color: 'rgba(255,255,255,0.35)', letterSpacing: 0.8, mb: 0.2}}>CARD HOLDER</Typography>
+          <Typography sx={{fontSize: 10, color: 'rgba(255,255,255,0.8)', letterSpacing: 1, fontWeight: 600}}>
+            {isGold ? 'GOLD MEMBER' : isBlack ? 'CARD HOLDER' : 'MEMBER'}
+          </Typography>
+        </Box>
+        <Box sx={{textAlign: 'right'}}>
+          <Typography sx={{fontSize: 7, color: 'rgba(255,255,255,0.35)', letterSpacing: 0.8, mb: 0.2}}>VALID THRU</Typography>
+          <Typography sx={{fontSize: 10, color: 'rgba(255,255,255,0.8)', letterSpacing: 1, fontWeight: 600}}>12/28</Typography>
+        </Box>
+        <Box sx={{display: 'flex'}}>
+          <Box sx={{width: 22, height: 22, borderRadius: '50%', background: isGold ? 'rgba(201,168,76,0.6)' : 'rgba(255,80,80,0.7)'}} />
+          <Box sx={{width: 22, height: 22, borderRadius: '50%', background: isGold ? 'rgba(201,168,76,0.9)' : 'rgba(255,160,0,0.8)', ml: -1}} />
+        </Box>
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 const StatItem = ({ value, label }) => {
   const ref = useRef(null);
@@ -419,7 +434,7 @@ export default function LandingPage() {
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   >
-                    <PlanCard plan="Premium" price="$8.99" dark={false} />
+                    <CreditCard variant="green" />
                   </motion.div>
                 </motion.div>
 
@@ -433,7 +448,7 @@ export default function LandingPage() {
                     animate={{ y: [0, -14, 0] }}
                     transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                   >
-                    <PlanCard plan="Standard" price="$8.99" dark={true} />
+                    <CreditCard variant="gold" />
                   </motion.div>
                 </motion.div>
 
@@ -447,7 +462,7 @@ export default function LandingPage() {
                     animate={{ y: [0, -8, 0] }}
                     transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                   >
-                    <PlanCard plan="Premium" price="$8.99" dark={true} />
+                    <CreditCard variant="black" />
                   </motion.div>
                 </motion.div>
               </Box>
