@@ -212,12 +212,6 @@ export default function LoginPage() {
                 />
               </motion.div>
 
-              <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: -1 }}>
-                <Typography sx={{fontSize: 13, color: themeColor, cursor: 'pointer', transition: 'color 0.5s ease', '&:hover': {opacity: 0.8 } }}>
-                  Forgot password?
-                </Typography>
-              </Box>
-
               <motion.div initial={{opacity: 0, y: 15 }} animate={{opacity: 1, y: 0 }} transition={{duration: 0.5, delay: 0.2 }}>
                 <Button
                   onClick={handleSignIn}
