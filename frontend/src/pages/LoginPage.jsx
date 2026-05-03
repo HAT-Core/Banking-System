@@ -47,7 +47,6 @@ export default function LoginPage() {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      // --- THE FIX: Separate routing based strictly on role ---
       if (user.role === 'admin') {
         if (loginType === 'customer') console.warn("Staff logged in via Personal portal.");
         navigate('/admin/dashboard');
@@ -178,7 +177,7 @@ export default function LoginPage() {
             <Box sx={{display: 'flex', flexDirection: 'column', gap: 2.5 }}>
               <motion.div key={`user-${loginType}`} initial={{opacity: 0, y: 15 }} animate={{opacity: 1, y: 0 }} transition={{duration: 0.4 }}>
                 <TextField
-                  label={loginType === 'customer' ? "Username or Email" : "Employee ID or Username"}
+                  label={loginType === 'customer' ? "Username" : "Username"}
                   variant="outlined"
                   fullWidth
                   value={username}
