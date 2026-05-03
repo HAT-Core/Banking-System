@@ -198,14 +198,16 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
                   sx={getInputSx(themeColor)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{color: 'rgba(255,255,255,0.3)', '&:hover': {color: themeColor } }}>
-                          {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{color: 'rgba(255,255,255,0.3)', '&:hover': {color: themeColor } }}>
+                            {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
                   }}
                 />
               </motion.div>
