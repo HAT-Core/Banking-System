@@ -18,4 +18,17 @@ const getMyAccounts = async (req, res) => {
   }
 };
 
-module.exports = { getMyAccounts };
+// GET /api/accounts/banks — active banks list for inter-bank transfer form
+const getActiveBanks = async (req, res) => {
+  try {
+    const result = await new sql.Request().query(`
+      SELECT bank_id, bank_name FROM supported_bank WHERE is_active = 1 ORDER BY bank_name ASC
+    `);
+    return res.status(200).json(result.recordset);
+  } catch (error) {
+    console.error('[accountController] getActiveBanks error:', error);
+    return res.status(500).json({ message: 'Failed to fetch banks.' });
+  }
+};
+
+module.exports = { getMyAccounts, getActiveBanks };
