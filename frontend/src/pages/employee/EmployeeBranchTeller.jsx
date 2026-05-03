@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Typography, TextField, Button, Alert, CircularProgress, Snackbar } from '@mui/material';
 import PointOfSaleRoundedIcon from '@mui/icons-material/PointOfSaleRounded';
-import api from '../../utils/api';
+import api from '../utils/api';
 
 const ACCENT = '#9FFF98';
 const fieldSx = {

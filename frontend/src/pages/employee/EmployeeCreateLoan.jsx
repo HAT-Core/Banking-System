@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import InfoOutlinedIcon     from '@mui/icons-material/InfoOutlined';
-import api from '../../utils/api';
+import api from '../utils/api';
 
 const ACCENT = '#9FFF98';
 

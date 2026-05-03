@@ -8,7 +8,7 @@ import CheckCircleRoundedIcon   from '@mui/icons-material/CheckCircleRounded';
 import CancelRoundedIcon        from '@mui/icons-material/CancelRounded';
 import HourglassEmptyRoundedIcon from '@mui/icons-material/HourglassEmptyRounded';
 import RefreshRoundedIcon       from '@mui/icons-material/RefreshRounded';
-import api from '../../utils/api';
+import api from '../utils/api';
 
 const ACCENT = '#9FFF98';
 
