@@ -10,6 +10,7 @@ import AdminCatalogs from './pages/admin/AdminCatalogs';
 
 import CustomerLayout from './pages/customer/CustomerLayout';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
+import TransactionHistory from './pages/customer/TransactionHistory';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         {/* Customer portal — future pages (transfers, transactions, loans, billing) slot in here */}
         <Route element={<CustomerLayout />}>
           <Route path="/dashboard" element={<CustomerDashboard />} />
+          <Route path="/transactions" element={<TransactionHistory />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
