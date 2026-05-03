@@ -103,7 +103,7 @@ const loginUser = async (req, res) => {
         const result = await request.query(`
             SELECT first_name, last_name, user_id, username, password_hash, role, status 
             FROM user_account 
-            WHERE username = @username
+            WHERE username = @username COLLATE Latin1_General_CS_AS
         `);
 
         if (result.recordset.length === 0){
