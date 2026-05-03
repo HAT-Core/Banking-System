@@ -16,6 +16,9 @@ app.use('/api/admin',require('./routes/adminRoutes'));
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/transfer', transferRoutes);
 app.use('/api/branch', branchRoutes);
+app.use('/api/kyc', require('./routes/kycRoutes'));
+app.use('/api/loans', require('./routes/loanRoutes'));
+app.use('/api/bills', require('./routes/billRoutes'));
 
 connectDB();
 runScheduledTransfers();
