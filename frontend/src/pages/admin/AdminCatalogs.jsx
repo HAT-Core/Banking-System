@@ -28,16 +28,6 @@ const inputSx = {
   '& .MuiSelect-icon': {color: 'rgba(255,255,255,0.5)'},
 };
 
-const PK_LOAN_TYPES = [
-  {label: 'Personal Loan', value: 'personal_loan'},
-  {label: 'Home Finance (Mortgage)', value: 'home_finance'},
-  {label: 'Auto Finance', value: 'auto_finance'},
-  {label: 'Business Finance', value: 'business_finance'},
-  {label: 'Agricultural Finance', value: 'agri_finance'},
-  {label: 'Education Loan', value: 'education_loan'},
-  {label: 'SME Finance', value: 'sme_finance'},
-];
-
 export default function AdminCatalogs() {
   const [tabValue, setTabValue] = useState(0);
 
@@ -279,14 +269,11 @@ export default function AdminCatalogs() {
           <FormControl fullWidth size="small" sx={inputSx}>
             <InputLabel>Select Loan Type</InputLabel>
             <Select value={selectedLoan} label="Select Loan Type" onChange={(e) => setSelectedLoan(e.target.value)} MenuProps={{PaperProps: {sx: {bgcolor: '#1A1A1A', color: '#fff'}}}}>
-              {loans.length > 0
-                ? loans.map((loan) => (
-                    <MenuItem key={loan.loan_type_id} value={loan.loan_type_id}>{loan.type_name}</MenuItem>
-                  ))
-                : PK_LOAN_TYPES.map((lt) => (
-                    <MenuItem key={lt.value} value={lt.value}>{lt.label}</MenuItem>
-                  ))
-              }
+              {loans.map((loanData) => (
+                  <MenuItem key={loanData.loan_type_id} value={loanData.loan_type_id}>
+                    {loanData.type_name}
+                  </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <TextField label="New Interest Rate (%)" type="number" value={newRate} onChange={(e) => setNewRate(e.target.value)} fullWidth size="small" sx={inputSx} />
