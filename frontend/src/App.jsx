@@ -13,6 +13,11 @@ import CustomerDashboard from './pages/customer/CustomerDashboard';
 import TransactionHistory from './pages/customer/TransactionHistory';
 import Transfers from './pages/customer/Transfers';
 
+import EmployeeLayout      from './pages/employee/EmployeeLayout';
+import EmployeeKycQueue    from './pages/employee/EmployeeKycQueue';
+import EmployeeCreateLoan  from './pages/employee/EmployeeCreateLoan';
+import EmployeeBranchTeller from './pages/employee/EmployeeBranchTeller';
+
 function App() {
   return (
     <BrowserRouter>
@@ -33,6 +38,13 @@ function App() {
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/transactions" element={<TransactionHistory />} />
           <Route path="/transfers" element={<Transfers />} />
+        </Route>
+
+        <Route path="/employee" element={<EmployeeLayout />}>
+          <Route index element={<Navigate to="kyc" replace />} />
+          <Route path="kyc"          element={<EmployeeKycQueue />} />
+          <Route path="loans/create" element={<EmployeeCreateLoan />} />
+          <Route path="teller"       element={<EmployeeBranchTeller />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

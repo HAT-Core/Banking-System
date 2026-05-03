@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import PointOfSaleRoundedIcon from '@mui/icons-material/PointOfSaleRounded';
 
 const ACCENT       = '#9FFF98';
 const ACCENT_DIM   = 'rgba(159,255,152,0.12)';
@@ -13,6 +14,7 @@ const ACCENT_GLOW  = 'rgba(159,255,152,0.35)';
 const NAV_ITEMS = [
   { label: 'KYC Verification', path: '/employee/kyc',          icon: <VerifiedUserRoundedIcon fontSize="small" /> },
   { label: 'Create Loan',      path: '/employee/loans/create',  icon: <AccountBalanceRoundedIcon fontSize="small" /> },
+  { label: 'Branch Teller',    path: '/employee/teller',        icon: <PointOfSaleRoundedIcon fontSize="small" /> },
 ];
 
 export default function EmployeeLayout() {
