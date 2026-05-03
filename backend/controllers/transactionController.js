@@ -1,5 +1,4 @@
-const sql = require('mssql');
-const db = require('../config/db');
+const { sql } = require('../config/db');
 
 const getTransactionHistory = async (req, res) => {
   try {

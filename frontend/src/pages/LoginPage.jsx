@@ -4,6 +4,7 @@ import {motion, AnimatePresence } from 'framer-motion';
 import {useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 import api from './utils/api'; 
 
 const getInputSx = (themeColor) => ({
@@ -23,13 +24,11 @@ const getInputSx = (themeColor) => ({
 export default function LoginPage() {
   const navigate = useNavigate();
   
-  //UIState
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loginType, setLoginType] = useState('customer');
   const [errorMsg, setErrorMsg] = useState('');
 
-  //Form State
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -46,29 +45,29 @@ export default function LoginPage() {
       const response = await api.post('/auth/login', {username, password });
       const {token, user } = response.data;
 
-      //Save token and user details to localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      //Role-based routing validation
-      if (user.role === 'admin' || user.role === 'employee') {
-        if (loginType === 'customer') {
-           console.warn("Staff logged in via Personal portal. Redirecting to secure portal.");
-        }
+      if (user.role === 'admin') {
+        if (loginType === 'customer') console.warn("Staff logged in via Personal portal.");
         navigate('/admin/dashboard');
-      }
+      } 
+      else if (user.role === 'employee') {
+        if (loginType === 'customer') console.warn("Staff logged in via Personal portal.");
+        navigate('/employee/kyc'); 
+      } 
       else if (user.role === 'customer') {
         if (loginType === 'staff') {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            setErrorMsg("Access Denied: You do not have staff clearance.");
-            setLoading(false);
-            return;
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setErrorMsg("Access Denied: You do not have staff clearance.");
+          setLoading(false);
+          return;
         }
         navigate('/dashboard'); 
       }
-
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Login failed:", error);
       if (error.response && error.response.data) {
         setErrorMsg(error.response.data.message);
@@ -76,7 +75,8 @@ export default function LoginPage() {
       else{
         setErrorMsg("Cannot connect to server. Please try again later.");
       }
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
   };
@@ -94,7 +94,7 @@ export default function LoginPage() {
         <motion.div initial={{opacity: 0, y: -20 }} animate={{opacity: 1, y: 0 }} transition={{duration: 0.6 }}>
           <Box sx={{display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => navigate('/')}>
             <Box sx={{width: 38, height: 38, background: themeColor, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.5s ease' }}>
-              <Typography sx={{fontSize: 18, color: '#0E0E0E', fontWeight: 900 }}>✦</Typography>
+              <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
             </Box>
             <Typography sx={{fontSize: 18, fontWeight: 700, color: '#fff' }}>HATCoreBank</Typography>
           </Box>
@@ -147,7 +147,7 @@ export default function LoginPage() {
             <Box sx={{mb: 4 }}>
               <Box sx={{display: {xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1.5, mb: 5 }}>
                 <Box sx={{width: 34, height: 34, background: themeColor, borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.5s ease' }}>
-                  <Typography sx={{fontSize: 16, color: '#0E0E0E', fontWeight: 900 }}>✦</Typography>
+                  <SavingsRoundedIcon sx={{ fontSize: 20, color: '#0E0E0E' }} />
                 </Box>
                 <Typography sx={{fontSize: 17, fontWeight: 700, color: '#fff' }}>HATCoreBank</Typography>
               </Box>
@@ -169,7 +169,6 @@ export default function LoginPage() {
               </Box>
             </Box>
 
-            {/* Error Message Display */}
             {errorMsg && (
               <Alert severity="error" sx={{mb: 3, background: 'rgba(239,68,68,0.05)', color: '#F87171', border: '1px solid rgba(239,68,68,0.2)', '& .MuiAlert-icon': {color: '#F87171' } }}>
                 {errorMsg}
@@ -179,11 +178,12 @@ export default function LoginPage() {
             <Box sx={{display: 'flex', flexDirection: 'column', gap: 2.5 }}>
               <motion.div key={`user-${loginType}`} initial={{opacity: 0, y: 15 }} animate={{opacity: 1, y: 0 }} transition={{duration: 0.4 }}>
                 <TextField
-                  label={loginType === 'customer' ? "Username or Email" : "Employee ID or Username"}
+                  label={loginType === 'customer' ? "Username" : "Username"}
                   variant="outlined"
                   fullWidth
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
                   sx={getInputSx(themeColor)}
                 />
               </motion.div>
@@ -196,24 +196,21 @@ export default function LoginPage() {
                   fullWidth
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSignIn()}
                   sx={getInputSx(themeColor)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{color: 'rgba(255,255,255,0.3)', '&:hover': {color: themeColor } }}>
-                          {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{color: 'rgba(255,255,255,0.3)', '&:hover': {color: themeColor } }}>
+                            {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
                   }}
                 />
               </motion.div>
-
-              <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: -1 }}>
-                <Typography sx={{fontSize: 13, color: themeColor, cursor: 'pointer', transition: 'color 0.5s ease', '&:hover': {opacity: 0.8 } }}>
-                  Forgot password?
-                </Typography>
-              </Box>
 
               <motion.div initial={{opacity: 0, y: 15 }} animate={{opacity: 1, y: 0 }} transition={{duration: 0.5, delay: 0.2 }}>
                 <Button

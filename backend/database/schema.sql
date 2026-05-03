@@ -9,7 +9,6 @@ CREATE TABLE user_account (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     cnic VARCHAR(13) NOT NULL UNIQUE CHECK (LEN(cnic) = 13),
-    -- BCNF FIX: Added UNIQUE constraint to phone
     phone VARCHAR(15) NOT NULL UNIQUE CHECK (LEN(phone) = 11 AND phone LIKE '03%'),
     address VARCHAR(255) NOT NULL,
     date_of_birth DATE NOT NULL CHECK (DATEDIFF(YEAR, date_of_birth, GETDATE()) >= 18)
@@ -77,7 +76,6 @@ CREATE TABLE supported_bank (
 CREATE TABLE interbank_transfer (
     ib_transfer_id INT PRIMARY KEY IDENTITY(1,1),
     transaction_id INT NOT NULL UNIQUE REFERENCES transactions(transaction_id),
-    from_bank_id INT NOT NULL REFERENCES supported_bank(bank_id),
     from_account_number VARCHAR(30) NOT NULL,
     to_bank_id INT NOT NULL REFERENCES supported_bank(bank_id),
     to_account_number VARCHAR(30) NOT NULL,
@@ -106,7 +104,7 @@ CREATE TABLE loan (
     status VARCHAR(10) NOT NULL DEFAULT 'running' CHECK (status IN ('running', 'completed', 'defaulted'))
 );
 
--- 11. installment
+-- 11. intstallment
 CREATE TABLE installment (
     installment_id INT PRIMARY KEY IDENTITY(1,1),
     loan_id INT NOT NULL REFERENCES loan(loan_id),
@@ -114,9 +112,12 @@ CREATE TABLE installment (
     amount DECIMAL(15,2) NOT NULL,
     status VARCHAR(10) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'overdue')),
     paid_date DATE NULL,
-    transaction_id INT UNIQUE REFERENCES transactions(transaction_id)
+    transaction_id INT REFERENCES transactions(transaction_id)
 );
 
+CREATE UNIQUE INDEX UX_installment_transaction_id 
+ON installment(transaction_id) 
+WHERE transaction_id IS NOT NULL;
 -- 12. biller
 CREATE TABLE biller (
     biller_id INT PRIMARY KEY IDENTITY(1,1),

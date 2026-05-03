@@ -19,7 +19,21 @@ const addBank = async(req, res)=>{
         res.status(500).json({message: "Failed to add bank to catalog."});
     }
 };
-
+const getDashboardStats = async(req, res)=>{
+    try{
+        const result = await sql.query(`
+            SELECT
+                (SELECT COUNT(*) FROM user_account WHERE role = 'customer') AS total_customers,
+                (SELECT COUNT(*) FROM user_account WHERE role = 'employee' AND status = 'active') AS active_staff,
+                (SELECT COUNT(*) FROM supported_bank) AS partner_banks
+        `);
+        res.status(200).json(result.recordset[0]);
+    }
+    catch(error){
+        console.error("Dashboard stats error:", error);
+        res.status(500).json({message: "Failed to fetch dashboard stats."});
+    }
+};
 const getBanks = async(req, res)=>{
     try{
         const result = await sql.query(`SELECT * FROM supported_bank ORDER BY bank_name ASC`);
@@ -165,4 +179,4 @@ const updateUserStatus = async(req, res)=>{
 };
 
 
-module.exports = {addBank, getBanks, addBiller, getBillers, updateLoanRate, getLoans, getEmployees, getCustomers, updateUserStatus};
+module.exports = {addBank, getBanks, addBiller, getBillers, updateLoanRate, getLoans, getEmployees, getCustomers, updateUserStatus, getDashboardStats};

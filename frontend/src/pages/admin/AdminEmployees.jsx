@@ -49,7 +49,7 @@ export default function AdminEmployees() {
     try {
       const {data } = await api.get('/admin/users/employees');
       setEmployees(data);
-    } 
+    }
     catch (error){
       console.error("Failed to fetch employees", error);
     }
@@ -60,40 +60,60 @@ export default function AdminEmployees() {
       const newStatus = currentStatus === 'active' ? 'locked' : 'active';
       await api.put(`/admin/users/${userId}/status`, {status: newStatus });
       await fetchEmployees(); 
-    } 
+    }
     catch (error){
       console.error("Failed to update status", error);
     }
   };
 
- const handleProvision = async () => {
+  const handleProvision = async () => {
     setErrorMsg('');
     setSuccessMsg(''); 
+
+    if (formData.cnic.length !== 13 || !/^\d{13}$/.test(formData.cnic)) {
+      setErrorMsg('CNIC must be exactly 13 digits with no dashes.');
+      return;
+    }
+    if (formData.phone.length !== 11 || !/^\d{11}$/.test(formData.phone)) {
+      setErrorMsg('Phone number must be exactly 11 digits (e.g. 03001234567).');
+      return;
+    }
 
     try{
       await api.post('/auth/register', formData);
       
+      const name = `${formData.firstName} ${formData.lastName}`;
       setFormData({firstName: '', lastName: '', username: '', password: '', cnic: '', phone: '', address: 'Bank Branch', dateOfBirth: '1990-01-01', jobTitle: '', role: 'employee' });
-      setSuccessMsg(`Employee ${formData.firstName} ${formData.lastName} successfully registered.`);
+      setSuccessMsg(`Employee ${name} successfully registered.`);
       setOpen(false);
       
       setTimeout(async () => {
         await fetchEmployees(); 
       }, 500);
-
-    } 
+    }
     catch (error){
       console.error("Registration failed", error);
       if (error.response && error.response.data) {
         setErrorMsg(error.response.data.message || error.response.data.error || "Failed to register employee.");
-      } else {
+      }
+      else {
         setErrorMsg("Network error. Could not reach the server.");
       }
     }
   };
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
+    if (name === 'cnic') {
+      value = value.replace(/\D/g, ''); 
+      if (value.length > 13) value = value.slice(0, 13); 
+    } 
+    else if (name === 'phone') {
+      value = value.replace(/\D/g, ''); 
+      if (value.length > 11) value = value.slice(0, 11);
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -103,7 +123,6 @@ export default function AdminEmployees() {
           <Typography sx={{fontSize: 28, fontWeight: 800, color: '#fff', letterSpacing: -0.5 }}>Staff Directory</Typography>
           <Typography sx={{fontSize: 15, color: 'rgba(255,255,255,0.4)' }}>Manage bank employees and access levels.</Typography>
           
-          {/* Main Page Success Message */}
           {successMsg && (
              <Alert severity="success" sx={{mt: 2, background: 'rgba(74,222,128,0.1)', color: '#4ADE80', border: '1px solid rgba(74,222,128,0.3)', '& .MuiAlert-icon': {color: '#4ADE80' } }}>
                {successMsg}
@@ -135,7 +154,7 @@ export default function AdminEmployees() {
             {employees.length === 0 ? (
                 <TableRow>
                     <TableCell colSpan={5} align="center" sx={{color: 'rgba(255,255,255,0.4)', py: 4, borderBottom: 'none' }}>
-                        No employees found. Provision a new employee to get started.
+                        No employees found. Register a new employee to get started.
                     </TableCell>
                 </TableRow>
             ) : (
@@ -173,11 +192,10 @@ export default function AdminEmployees() {
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={modalStyle}>
           <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-            <Typography sx={{fontSize: 20, fontWeight: 700, color: '#fff' }}>Provision New Employee</Typography>
+            <Typography sx={{fontSize: 20, fontWeight: 700, color: '#fff' }}>Register New Employee</Typography>
             <IconButton onClick={() => setOpen(false)} sx={{color: 'rgba(255,255,255,0.4)' }}><CloseRoundedIcon /></IconButton>
           </Box>
           
-          {/* Modal Error Message */}
           {errorMsg && (
             <Alert severity="error" sx={{mb: 3, background: 'rgba(239,68,68,0.05)', color: '#F87171', border: '1px solid rgba(239,68,68,0.2)', '& .MuiAlert-icon': {color: '#F87171' } }}>
               {errorMsg}
@@ -192,8 +210,8 @@ export default function AdminEmployees() {
             <TextField name="username" onChange={handleChange} value={formData.username} label="Username" fullWidth size="small" sx={inputSx} />
             <TextField name="password" onChange={handleChange} value={formData.password} label="Temporary Password" type="password" fullWidth size="small" sx={inputSx} />
             <Box sx={{display: 'flex', gap: 2 }}>
-              <TextField name="cnic" onChange={handleChange} value={formData.cnic} label="CNIC Number (13 digits)" fullWidth size="small" sx={inputSx} />
-              <TextField name="phone" onChange={handleChange} value={formData.phone} label="Phone Number (03...)" fullWidth size="small" sx={inputSx} />
+              <TextField name="cnic" onChange={handleChange} value={formData.cnic} label="CNIC (without dashes)" placeholder="35201xxxxxxxx" inputProps={{maxLength: 13, inputMode: 'numeric', pattern: '[0-9]*' }} fullWidth size="small" sx={inputSx} />
+              <TextField name="phone" onChange={handleChange} value={formData.phone} label="Phone Number" placeholder="03xxxxxxxxx" inputProps={{maxLength: 11, inputMode: 'numeric', pattern: '[0-9]*' }} fullWidth size="small" sx={inputSx} />
             </Box>
             <TextField name="jobTitle" onChange={handleChange} value={formData.jobTitle} label="Job Title" fullWidth size="small" sx={inputSx} />
             <Button onClick={handleProvision} variant="contained" fullWidth sx={{mt: 2, background: '#60A5FA', color: '#0E0E0E', fontWeight: 700, py: 1.5, borderRadius: '10px', textTransform: 'none', '&:hover': {background: '#93C5FD' } }}>

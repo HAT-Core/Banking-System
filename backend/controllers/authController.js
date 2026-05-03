@@ -95,15 +95,15 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const {username, password} = req.body;
 
         const request = new sql.Request();
         request.input('username', sql.VarChar, username);
         
         const result = await request.query(`
-            SELECT user_id, username, password_hash, role, status 
+            SELECT first_name, last_name, user_id, username, password_hash, role, status 
             FROM user_account 
-            WHERE username = @username
+            WHERE username = @username COLLATE Latin1_General_CS_AS
         `);
 
         if (result.recordset.length === 0){
@@ -134,7 +134,9 @@ const loginUser = async (req, res) => {
             user: {
                 userId: user.user_id,
                 username: user.username,
-                role: user.role
+                role: user.role,
+                firstName: user.first_name,
+                lastName: user.last_name
             }
         });
 

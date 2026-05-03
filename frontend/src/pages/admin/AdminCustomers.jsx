@@ -19,15 +19,25 @@ const modalStyle ={
   p: 4,
 };
 
-const inputSx ={
-  '& .MuiOutlinedInput-root':{
+const inputSx = {
+  '& .MuiOutlinedInput-root': {
     color: '#fff',
-    '& fieldset':{borderColor: 'rgba(255,255,255,0.1)' },
-    '&:hover fieldset':{borderColor: 'rgba(96,165,250,0.4)' },
-    '&.Mui-focused fieldset':{borderColor: '#60A5FA', borderWidth: 1 },
+    '& fieldset': { borderColor: 'rgba(255,255,255,0.1)' },
+    '&:hover fieldset': { borderColor: 'rgba(96,165,250,0.4)' },
+    '&.Mui-focused fieldset': { borderColor: '#60A5FA', borderWidth: 1 },
   },
-  '& .MuiInputLabel-root':{color: 'rgba(255,255,255,0.4)' },
-  '& .MuiInputLabel-root.Mui-focused':{color: '#60A5FA' },
+  '& .MuiInputLabel-root': { color: 'rgba(255,255,255,0.4)' },
+  '& .MuiInputLabel-root.Mui-focused': { color: '#60A5FA' },
+  
+  '& input[type="date"]::-webkit-calendar-picker-indicator': {
+    filter: 'invert(1)', //Forces the black calendar icon to turn white
+    opacity: 0.5,
+    cursor: 'pointer',
+    '&:hover': { opacity: 1 },
+  },
+  '& input[type="date"]': {
+    color: 'rgba(255,255,255,0.8)', 
+  }
 };
 
 export default function AdminCustomers(){
@@ -94,8 +104,18 @@ export default function AdminCustomers(){
     }
   };
 
-  const handleChange = (e) =>{
-    setFormData({...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    if (name === 'cnic') {
+      value = value.replace(/\D/g, ''); 
+      if (value.length > 13) value = value.slice(0, 13);
+    } 
+    else if (name === 'phone') {
+      value = value.replace(/\D/g, ''); 
+      if (value.length > 11) value = value.slice(0, 11);
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -196,11 +216,29 @@ export default function AdminCustomers(){
               <TextField name="lastName" onChange={handleChange} value={formData.lastName} label="Last Name" fullWidth size="small" sx={inputSx} />
             </Box>
             <TextField name="username" onChange={handleChange} value={formData.username} label="Username" fullWidth size="small" sx={inputSx} />
-            <TextField name="password" onChange={handleChange} value={formData.password} label="Temporary Password" type="password" fullWidth size="small" sx={inputSx} />
-            <TextField name="cnic" onChange={handleChange} value={formData.cnic} label="CNIC Number (13 digits)" fullWidth size="small" sx={inputSx} />
+            <TextField name="password" onChange={handleChange} value={formData.password} label="Password" type="password" fullWidth size="small" sx={inputSx} />
+            <TextField name="cnic" onChange={handleChange} value={formData.cnic} label="CNIC (without dashes)" placeholder='35201xxxxxxxx' inputProps={{maxLength: 13, inputMode: 'numeric'}} fullWidth size="small" sx={inputSx} />
             <Box sx={{display: 'flex', gap: 2 }}>
-              <TextField name="dateOfBirth" onChange={handleChange} value={formData.dateOfBirth} label="Date of Birth" type="date" InputLabelProps={{shrink: true }} fullWidth size="small" sx={inputSx} />
-              <TextField name="phone" onChange={handleChange} value={formData.phone} label="Phone (03...)" fullWidth size="small" sx={inputSx} />
+              <TextField 
+                name="dateOfBirth" 
+                onChange={handleChange} 
+                value={formData.dateOfBirth} 
+                label="Date of Birth" 
+                type="date"
+                inputProps={{ style: { colorScheme: 'dark' } }} 
+                fullWidth 
+                size="small" 
+                sx={{
+                  ...inputSx,
+                  '& input::-webkit-datetime-edit': {
+                    color: formData.dateOfBirth ? '#fff' : 'transparent',
+                  },
+                  '& input:focus::-webkit-datetime-edit': {
+                    color: '#fff',
+                  }
+                }} 
+              />
+              <TextField name="phone" onChange={handleChange} value={formData.phone} label="Phone Number" placeholder='03xxxxxxxxx' inputProps={{maxLength: 11, inputMode: 'numeric'}} fullWidth size="small" sx={inputSx} />
             </Box>
             <Button onClick={handleRegister} variant="contained" fullWidth sx={{mt: 2, background: '#60A5FA', color: '#0E0E0E', fontWeight: 700, py: 1.5, borderRadius: '10px', textTransform: 'none', '&:hover':{background: '#93C5FD' } }}>
               Register Customer

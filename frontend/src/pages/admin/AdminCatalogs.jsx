@@ -22,7 +22,7 @@ const inputSx = {
     '& fieldset': {borderColor: 'rgba(255,255,255,0.1)'},
     '&:hover fieldset': {borderColor: 'rgba(96,165,250,0.4)'},
     '&.Mui-focused fieldset': {borderColor: '#60A5FA', borderWidth: 1},
-},
+  },
   '& .MuiInputLabel-root': {color: 'rgba(255,255,255,0.4)'},
   '& .MuiInputLabel-root.Mui-focused': {color: '#60A5FA'},
   '& .MuiSelect-icon': {color: 'rgba(255,255,255,0.5)'},
@@ -48,37 +48,37 @@ export default function AdminCatalogs() {
     fetchBanks();
     fetchBillers();
     fetchLoans();
-}, []);
+  }, []);
 
   const fetchBanks = async () => {
     try{
       const {data} = await api.get('/admin/catalogs/banks');
       setBanks(data);
-}
-catch (error){
+    }
+    catch (error){
       console.error("Failed to fetch banks", error);
-}
-};
+    }
+  };
 
   const fetchBillers = async () => {
     try{
       const {data} = await api.get('/admin/catalogs/billers');
       setBillers(data);
-}
-catch (error) {
+    }
+    catch (error) {
       console.error("Failed to fetch billers", error);
-}
-};
+    }
+  };
 
   const fetchLoans = async () => {
     try{
       const {data} = await api.get('/admin/catalogs/loans');
       setLoans(data);
-}
-catch (error){
+    }
+    catch (error){
       console.error("Failed to fetch loans", error);
-}
-};
+    }
+  };
 
   const handleAddBank = async () => {
     setErrorMsg('');
@@ -92,12 +92,12 @@ catch (error){
       
       setTimeout(async () => {
         await fetchBanks();
-}, 500);
-}
-catch (error){
+      }, 500);
+    }
+    catch (error){
       setErrorMsg(error.response?.data?.message || 'Failed to add bank.');
-}
-};
+    }
+  };
 
   const handleAddBiller = async () => {
     setErrorMsg('');
@@ -112,12 +112,12 @@ catch (error){
       
       setTimeout(async () => {
         await fetchBillers();
-}, 500);
-}
-catch (error){
+      }, 500);
+    }
+    catch (error){
       setErrorMsg(error.response?.data?.message || 'Failed to add biller.');
-}
-};
+    }
+  };
 
   const handleUpdateRate = async () => {
     setErrorMsg('');
@@ -132,18 +132,18 @@ catch (error){
       
       setTimeout(async () => {
         await fetchLoans();
-}, 500);
-}
-catch (error){
+      }, 500);
+    }
+    catch (error){
       setErrorMsg(error.response?.data?.message || 'Failed to update rate.');
-}
-};
+    }
+  };
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
     setErrorMsg('');
     setSuccessMsg('');
-};
+  };
 
   return (
     <Box>
@@ -171,7 +171,7 @@ catch (error){
             '& .MuiTabs-indicator': {backgroundColor: '#60A5FA', height: 3, borderRadius: '3px 3px 0 0'},
             '& .MuiTab-root': {textTransform: 'none', fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.4)', minHeight: 60},
             '& .Mui-selected': {color: '#60A5FA !important'},
-   }}
+          }}
         >
           <Tab icon={<AccountBalanceRoundedIcon sx={{mr: 1, mb: '0 !important'}} />} iconPosition="start" label="Supported Banks" />
           <Tab icon={<ReceiptLongRoundedIcon sx={{mr: 1, mb: '0 !important'}} />} iconPosition="start" label="Registered Billers" />
@@ -265,17 +265,19 @@ catch (error){
       </TabPanel>
 
       <TabPanel value={tabValue} index={2}>
-        <Box sx={{display: 'flex', gap: 2, mb: 4, background: 'rgba(20,20,20,0.4)', p: 3, borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)'}}>
+        <Box sx={{display: 'flex', gap: 2, mb: 4, background: 'rgba(20,20,20,0.4)', p: 3, borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', alignItems: 'center'}}>
           <FormControl fullWidth size="small" sx={inputSx}>
             <InputLabel>Select Loan Type</InputLabel>
             <Select value={selectedLoan} label="Select Loan Type" onChange={(e) => setSelectedLoan(e.target.value)} MenuProps={{PaperProps: {sx: {bgcolor: '#1A1A1A', color: '#fff'}}}}>
-              {loans.map((loan) => (
-                <MenuItem key={loan.loan_type_id} value={loan.loan_type_id}>{loan.type_name}</MenuItem>
+              {loans.map((loanData) => (
+                  <MenuItem key={loanData.loan_type_id} value={loanData.loan_type_id}>
+                    {loanData.type_name}
+                  </MenuItem>
               ))}
             </Select>
           </FormControl>
           <TextField label="New Interest Rate (%)" type="number" value={newRate} onChange={(e) => setNewRate(e.target.value)} fullWidth size="small" sx={inputSx} />
-          <Button onClick={handleUpdateRate} variant="contained" startIcon={<SaveRoundedIcon />} sx={{background: '#60A5FA', color: '#0E0E0E', fontWeight: 700, px: 4, borderRadius: '10px', textTransform: 'none', whiteSpace: 'nowrap', '&:hover': {background: '#93C5FD'}}}>
+          <Button onClick={handleUpdateRate} variant="contained" startIcon={<SaveRoundedIcon />} sx={{background: '#60A5FA', color: '#0E0E0E', fontWeight: 700, px: 3, py: 1.1, borderRadius: '10px', textTransform: 'none', whiteSpace: 'nowrap', minWidth: 'fit-content', '&:hover': {background: '#93C5FD'}}}>
             Update Rate
           </Button>
         </Box>
