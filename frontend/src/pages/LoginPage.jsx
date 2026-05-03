@@ -47,21 +47,24 @@ export default function LoginPage() {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      if (user.role === 'admin' || user.role === 'employee') {
-        if (loginType === 'customer') {
-           console.warn("Staff logged in via Personal portal. Redirecting to secure portal.");
-        }
+      // --- THE FIX: Separate routing based strictly on role ---
+      if (user.role === 'admin') {
+        if (loginType === 'customer') console.warn("Staff logged in via Personal portal.");
         navigate('/admin/dashboard');
-      }
+      } 
+      else if (user.role === 'employee') {
+        if (loginType === 'customer') console.warn("Staff logged in via Personal portal.");
+        navigate('/employee/kyc'); 
+      } 
       else if (user.role === 'customer') {
         if (loginType === 'staff') {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            setErrorMsg("Access Denied: You do not have staff clearance.");
-            setLoading(false);
-            return;
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setErrorMsg("Access Denied: You do not have staff clearance.");
+          setLoading(false);
+          return;
         }
-        navigate('/dashboard'); 
+        navigate('/customer/dashboard'); 
       }
     }
     catch (error) {
