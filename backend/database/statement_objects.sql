@@ -79,3 +79,17 @@ BEGIN
       AND transaction_date <  @endDate;
 END;
 GO
+CREATE VIEW vw_EmployeePerformanceReport AS
+SELECT 
+    e.employee_id,
+    u.first_name + ' ' + u.last_name AS employee_name,
+    e.job_title,
+    (SELECT COUNT(*) FROM customer c WHERE c.verified_by_employee = e.employee_id) AS total_kyc_verified,
+    (SELECT COUNT(*) FROM account a WHERE a.created_by_employee = e.employee_id) AS total_accounts_opened,
+    (SELECT COUNT(*) FROM loan l WHERE l.approved_by_employee = e.employee_id) AS total_loans_approved,
+    ISNULL((SELECT SUM(amount) FROM loan l WHERE l.approved_by_employee = e.employee_id), 0) AS total_loan_value
+FROM 
+    employee e
+JOIN 
+    user_account u ON e.user_id = u.user_id;
+GO
