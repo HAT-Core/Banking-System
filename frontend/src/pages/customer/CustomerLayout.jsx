@@ -8,6 +8,7 @@ import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded
 import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 
 const NAV_ITEMS = [
   { label: 'Dashboard',           path: '/dashboard',            icon: <DashboardRoundedIcon fontSize="small" /> },
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { label: 'Transaction History', path: '/transactions',         icon: <ReceiptLongRoundedIcon fontSize="small" /> },
   { label: 'Loans',               path: '/loans',                icon: <AccountBalanceRoundedIcon fontSize="small" /> },
   { label: 'Billing',             path: '/billing',              icon: <PaymentsRoundedIcon fontSize="small" /> },
+  { label: 'Statement',           path: '/statement',            icon: <DescriptionRoundedIcon fontSize="small" /> },
 ];
 
 export default function CustomerLayout() {
