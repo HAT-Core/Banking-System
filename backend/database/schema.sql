@@ -44,7 +44,7 @@ CREATE TABLE customer (
 -- 5. account
 CREATE TABLE account (
     account_id INT PRIMARY KEY IDENTITY(1,1),
-    customer_id INT NOT NULL REFERENCES customer(customer_id),
+    customer_id INT NOT NULL UNIQUE REFERENCES customer(customer_id),
     account_type VARCHAR(10) NOT NULL CHECK (account_type IN ('savings', 'current')),
     balance DECIMAL(15,2) NOT NULL DEFAULT 0 CHECK (balance >= 0),
     created_by_employee INT NOT NULL REFERENCES employee(employee_id),
@@ -94,7 +94,7 @@ CREATE TABLE loan_type (
 -- 10. loan
 CREATE TABLE loan (
     loan_id INT PRIMARY KEY IDENTITY(1,1),
-    -- BCNF FIX: Removed customer_id because account_id already determines the customer
+    --BCNF Fix: Removed customer_id because account_id already determines the customer
     account_id INT NOT NULL REFERENCES account(account_id),
     loan_type_id INT NOT NULL REFERENCES loan_type(loan_type_id),
     approved_by_employee INT NOT NULL REFERENCES employee(employee_id),
@@ -155,7 +155,7 @@ CREATE TABLE bill_payment (
     payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     result VARCHAR(10) NOT NULL CHECK (result IN ('success', 'failed'))
 );
-
+	
 -- 16. audit_log
 CREATE TABLE audit_log (
     log_id INT PRIMARY KEY IDENTITY(1,1),
