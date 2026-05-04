@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './ProtectedRoutes';
+import PublicRoute from './PublicRoute'
 
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -27,9 +29,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route element={<PublicRoute />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        </Route>
 
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboard />} />
@@ -38,7 +43,9 @@ function App() {
           <Route path="catalogs" element={<AdminCatalogs />} />
           <Route path="performance" element={<EmployeePerformance />} />
         </Route>
+        </Route>
 
+        <Route element={<ProtectedRoute allowedRoles={['customer']} />}>
         <Route element={<CustomerLayout />}>
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/transactions" element={<TransactionHistory />} />
@@ -47,12 +54,15 @@ function App() {
           <Route path="/billing" element={<CustomerBilling />} />
           <Route path="/statement" element={<AccountStatement />} />
         </Route>
+        </Route>
 
+        <Route element={<ProtectedRoute allowedRoles={['employee', 'admin']} />}>
         <Route path="/employee" element={<EmployeeLayout />}>
           <Route index element={<Navigate to="kyc" replace />} />
           <Route path="kyc" element={<EmployeeKycQueue />} />
           <Route path="loans/create" element={<EmployeeCreateLoan />} />
           <Route path="teller" element={<EmployeeBranchTeller />} />
+        </Route>
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
