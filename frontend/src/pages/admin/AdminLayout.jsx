@@ -7,9 +7,11 @@ import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
+import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
 
 const NAV_ITEMS = [
   {label: 'Overview', path: '/admin/dashboard', icon: <DashboardRoundedIcon fontSize="small" /> },
+  {label: 'Performance', path: '/admin/performance', icon: <QueryStatsRoundedIcon fontSize="small" /> },
   {label: 'Employees', path: '/admin/employees', icon: <PeopleRoundedIcon fontSize="small" /> },
   {label: 'Customers', path: '/admin/customers', icon: <AccountBalanceRoundedIcon fontSize="small" /> },
   {label: 'System Catalogs', path: '/admin/catalogs', icon: <SettingsRoundedIcon fontSize="small" /> },
