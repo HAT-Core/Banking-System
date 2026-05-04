@@ -87,7 +87,7 @@ export default function EmployeeCreateLoan() {
 
   return (
     <Box>
-      {/* ── Page Header ── */}
+      {/* Page Header */}
       <Box sx={{ mb: 4 }}>
         <Typography sx={{ fontSize: 28, fontWeight: 800, color: '#fff', letterSpacing: -0.5 }}>
           Create Loan
@@ -99,7 +99,7 @@ export default function EmployeeCreateLoan() {
 
       <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
-        {/* ── Form Card ── */}
+        {/* Form Card */}
         <Box sx={{ flex: '1 1 460px', maxWidth: 560, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '20px', p: 4 }}>
 
           {error && (
@@ -153,7 +153,7 @@ export default function EmployeeCreateLoan() {
               helperText="Minimum 1, maximum 60 months"
             />
 
-            {/* ── Installment Preview ── */}
+            {/* Installment Preview */}
             {monthlyAmount && (
               <Box sx={{ background: 'rgba(159,255,152,0.05)', border: `1px solid rgba(159,255,152,0.15)`, borderRadius: '14px', p: 3 }}>
                 <Typography sx={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: 1, mb: 1.5 }}>
@@ -191,7 +191,7 @@ export default function EmployeeCreateLoan() {
           </Box>
         </Box>
 
-        {/* ── Info Side Panel ── */}
+        {/* Info Side Panel */}
         <Box sx={{ flex: '0 1 280px', display: 'flex', flexDirection: 'column', gap: 2 }}>
 
           <Box sx={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '16px', p: 3 }}>
@@ -226,7 +226,7 @@ export default function EmployeeCreateLoan() {
         </Box>
       </Box>
 
-      {/* ── Success Snackbar ── */}
+      {/* Success Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={5000}

@@ -45,7 +45,7 @@ export default function EmployeeLayout() {
       {/* Background glow — green tint to distinguish from admin's blue */}
       <Box sx={{ position: 'fixed', top: '-20%', right: '-10%', width: '70%', height: '70%', background: 'radial-gradient(ellipse, rgba(159,255,152,0.05) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
-      {/* ── SIDEBAR ── */}
+      {/* SIDEBAR */}
       <Box sx={{ width: 280, background: 'rgba(15,15,15,0.8)', backdropFilter: 'blur(20px)', borderRight: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 20 }}>
 
         {/* Logo */}
@@ -102,7 +102,6 @@ export default function EmployeeLayout() {
         </Box>
       </Box>
 
-      {/* ── MAIN CONTENT ── */}
       <Box sx={{ flex: 1, marginLeft: '280px', display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 10 }}>
 
         {/* Top Bar */}

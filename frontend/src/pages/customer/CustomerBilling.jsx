@@ -27,7 +27,7 @@ const fieldSx = {
   '& .MuiInputLabel-root.Mui-focused': { color: ACCENT },
 };
 
-// ── Subscribe dialog ────────────────────────────────────────────────────────
+// Subscribe dialog 
 function SubscribeDialog({ open, biller, onClose, onSuccess }) {
   const [form, setForm] = useState({ accountId: '', referenceNumber: '', billingDay: '', amount: '', autoPay: true });
   const [loading, setLoading] = useState(false);
@@ -104,7 +104,7 @@ function SubscribeDialog({ open, biller, onClose, onSuccess }) {
   );
 }
 
-// ── Main Page ───────────────────────────────────────────────────────────────
+// Main Page 
 export default function CustomerBilling() {
   const [tab,          setTab]          = useState('billers');   // 'billers' | 'pending'
   const [billers,      setBillers]      = useState([]);
@@ -205,7 +205,7 @@ export default function CustomerBilling() {
       {/* Error */}
       {!loading && error && <Alert severity="error" sx={{ borderRadius: '12px' }}>{error}</Alert>}
 
-      {/* ── Biller Directory ── */}
+      {/*Biller Directory*/}
       {!loading && !error && tab === 'billers' && (
         <>
           {billers.length === 0 ? (
@@ -251,7 +251,7 @@ export default function CustomerBilling() {
         </>
       )}
 
-      {/* ── Pending Bills ── */}
+      {/*Pending Bills*/}
       {!loading && !error && tab === 'pending' && (
         <>
           {pendingBills.length === 0 ? (

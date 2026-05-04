@@ -354,7 +354,7 @@ export default function Transfers() {
       {/* Two-column layout: form left, info right */}
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 340px' }, gap: 4, alignItems: 'start' }}>
 
-        {/* ── Form card ── */}
+        {/* Form card */}
         <Box sx={{ background: 'rgba(20,20,20,0.7)', border: '1px solid rgba(255,255,255,0.05)',
           borderRadius: '24px', overflow: 'hidden' }}>
 

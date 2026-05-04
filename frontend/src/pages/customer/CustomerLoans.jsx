@@ -188,7 +188,7 @@ function LoanCard({ loan, onPay, payingId }) {
   );
 }
 
-// ── Main Page ──────────────────────────────────────────────────────────────
+// Main Page 
 export default function CustomerLoans() {
   const [loans,     setLoans]     = useState([]);
   const [loading,   setLoading]   = useState(true);
