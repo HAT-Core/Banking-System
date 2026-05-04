@@ -172,4 +172,32 @@ const getMyLoans = async (req, res) => {
     }
 };
 
-module.exports = { createLoan, payInstallment, getMyLoans };
+const getLoanInstallments = async (req, res) => {
+    try {
+        if (req.user.role !== 'customer') {
+            return res.status(403).json({ message: "Forbidden: Only customers can view their installments." });
+        }
+
+        const { loanId } = req.params;
+        const request = new sql.Request();
+        request.input('loanId', sql.Int, loanId);
+        request.input('userId', sql.Int, req.user.userId);
+
+        const result = await request.query(`
+            SELECT i.installment_id, i.due_date, i.amount, i.status, i.paid_date
+            FROM installment i
+            JOIN loan l ON i.loan_id = l.loan_id
+            JOIN account a ON l.account_id = a.account_id
+            JOIN customer c ON a.customer_id = c.customer_id
+            WHERE i.loan_id = @loanId AND c.user_id = @userId
+            ORDER BY i.due_date ASC
+        `);
+
+        res.status(200).json(result.recordset);
+    } catch (error) {
+        console.error("Get loan installments error:", error);
+        res.status(500).json({ message: "Server error. Could not retrieve installments." });
+    }
+};
+
+module.exports = { createLoan, payInstallment, getMyLoans, getLoanInstallments };
