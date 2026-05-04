@@ -3,7 +3,7 @@ const router = express.Router();
 const {protect,authorizeAdmin} = require('../middleware/authMiddleware');
 
 const {getBanks,addBank,getBillers,addBiller,getLoans,updateLoanRate,getEmployees,
-     getCustomers,updateUserStatus, getDashboardStats} = require('../controllers/adminController');
+     getCustomers,updateUserStatus, getDashboardStats, getStaffPerformance} = require('../controllers/adminController');
 
 router.get('/catalogs/banks',protect,authorizeAdmin,getBanks);
 router.post('/catalogs/banks',protect,authorizeAdmin,addBank);
@@ -19,5 +19,6 @@ router.get('/users/customers',protect,authorizeAdmin,getCustomers);
 router.put('/users/:id/status',protect,authorizeAdmin,updateUserStatus);
 
 router.get('/dashboard/stats', protect, authorizeAdmin, getDashboardStats);
+router.get('/dashboard/performance', protect, authorizeAdmin, getStaffPerformance);
 
 module.exports = router;

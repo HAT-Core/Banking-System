@@ -177,6 +177,19 @@ const updateUserStatus = async(req, res)=>{
         res.status(500).json({message: "Failed to update user status."});
     }
 };
+const getStaffPerformance = async(req, res) => {
+    try{
+        const result = await sql.query(`
+            SELECT * FROM vw_EmployeePerformanceReport 
+            ORDER BY total_accounts_opened DESC, total_kyc_verified DESC
+        `);
+        res.status(200).json(result.recordset);
+    } 
+    catch(error){
+        console.error("Staff performance error:", error);
+        res.status(500).json({message: "Failed to fetch staff performance report."});
+    }
+};
 
 
-module.exports = {addBank, getBanks, addBiller, getBillers, updateLoanRate, getLoans, getEmployees, getCustomers, updateUserStatus, getDashboardStats};
+module.exports = {addBank, getBanks, addBiller, getBillers, updateLoanRate, getLoans, getEmployees, getCustomers, updateUserStatus, getDashboardStats,getStaffPerformance};

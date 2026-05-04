@@ -7,6 +7,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminEmployees from './pages/admin/AdminEmployees';
 import AdminCustomers from './pages/admin/AdminCustomers';
 import AdminCatalogs from './pages/admin/AdminCatalogs';
+import EmployeePerformance from './pages/admin/EmployeePerformance';
 
 import CustomerLayout from './pages/customer/CustomerLayout';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
@@ -19,6 +20,12 @@ import AccountStatement from './pages/customer/AccountStatement';
 import EmployeeLayout      from './pages/employee/EmployeeLayout';
 import EmployeeKycQueue    from './pages/employee/EmployeeKycQueue';
 import EmployeeCreateLoan  from './pages/employee/EmployeeCreateLoan';
+import CustomerLoans from './pages/customer/CustomerLoans';
+import CustomerBilling from './pages/customer/CustomerBilling';
+
+import EmployeeLayout from './pages/employee/EmployeeLayout';
+import EmployeeKycQueue from './pages/employee/EmployeeKycQueue';
+import EmployeeCreateLoan from './pages/employee/EmployeeCreateLoan';
 import EmployeeBranchTeller from './pages/employee/EmployeeBranchTeller';
 
 function App() {
@@ -34,9 +41,9 @@ function App() {
           <Route path="employees" element={<AdminEmployees />} />
           <Route path="customers" element={<AdminCustomers />} />
           <Route path="catalogs" element={<AdminCatalogs />} />
+          <Route path="performance" element={<EmployeePerformance />} />
         </Route>
 
-        {/* Customer portal — future pages (transfers, transactions, loans, billing) slot in here */}
         <Route element={<CustomerLayout />}>
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/transactions" element={<TransactionHistory />} />
