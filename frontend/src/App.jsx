@@ -14,7 +14,7 @@ import TransactionHistory from './pages/customer/TransactionHistory';
 import Transfers from './pages/customer/Transfers';
 import CustomerLoans      from './pages/customer/CustomerLoans';
 import CustomerBilling    from './pages/customer/CustomerBilling';
-
+import AccountStatement from './pages/customer/AccountStatement';
 
 import EmployeeLayout      from './pages/employee/EmployeeLayout';
 import EmployeeKycQueue    from './pages/employee/EmployeeKycQueue';
@@ -41,15 +41,16 @@ function App() {
           <Route path="/dashboard" element={<CustomerDashboard />} />
           <Route path="/transactions" element={<TransactionHistory />} />
           <Route path="/transfers" element={<Transfers />} />
-	  <Route path="/loans"        element={<CustomerLoans />} />
-          <Route path="/billing"      element={<CustomerBilling />} />
+	        <Route path="/loans" element={<CustomerLoans />} />
+          <Route path="/billing" element={<CustomerBilling />} />
+          <Route path="/statement" element={<AccountStatement />} />
         </Route>
 
         <Route path="/employee" element={<EmployeeLayout />}>
           <Route index element={<Navigate to="kyc" replace />} />
-          <Route path="kyc"          element={<EmployeeKycQueue />} />
+          <Route path="kyc" element={<EmployeeKycQueue />} />
           <Route path="loans/create" element={<EmployeeCreateLoan />} />
-          <Route path="teller"       element={<EmployeeBranchTeller />} />
+          <Route path="teller" element={<EmployeeBranchTeller />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
