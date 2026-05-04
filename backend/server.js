@@ -8,6 +8,9 @@ const branchRoutes = require('./routes/branchRoutes');
 const accountRoutes = require('./routes/accountRoutes');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const kycRoutes = require('./routes/kycRoutes');
+const loanRoutes = require('./routes/loanRoutes');
+const billRoutes = require('./routes/billRoutes')
 
 const cors = require('cors');
 const app = express();
@@ -21,9 +24,9 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/transfer', transferRoutes);
 app.use('/api/branch', branchRoutes);
 app.use('/api/accounts', accountRoutes);
-app.use('/api/kyc', require('./routes/kycRoutes'));
-app.use('/api/loans', require('./routes/loanRoutes'));
-app.use('/api/bills', require('./routes/billRoutes'));
+app.use('/api/kyc', kycRoutes);
+app.use('/api/loans', loanRoutes);
+app.use('/api/bills', billRoutes);
 
 connectDB();
 runScheduledTransfers();

@@ -60,7 +60,7 @@ export default function EmployeeKycQueue() {
 
   return (
     <Box>
-      {/* ── Page Header ── */}
+      {/* Page Header */}
       <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 4 }}>
         <Box>
           <Typography sx={{ fontSize: 28, fontWeight: 800, color: '#fff', letterSpacing: -0.5 }}>
@@ -81,7 +81,7 @@ export default function EmployeeKycQueue() {
         </Button>
       </Box>
 
-      {/* ── Stats Badge ── */}
+      {/* Stats Badge */}
       {!loading && !error && (
         <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
           <Box sx={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', px: 3, py: 2, display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -94,19 +94,19 @@ export default function EmployeeKycQueue() {
         </Box>
       )}
 
-      {/* ── Loading ── */}
+      {/* Loading */}
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 10 }}>
           <CircularProgress sx={{ color: ACCENT }} />
         </Box>
       )}
 
-      {/* ── Error ── */}
+      {/* Error */}
       {!loading && error && (
         <Alert severity="error" sx={{ borderRadius: '12px', mb: 3 }}>{error}</Alert>
       )}
 
-      {/* ── Empty State ── */}
+      {/* Empty State */}
       {!loading && !error && customers.length === 0 && (
         <Box sx={{ textAlign: 'center', mt: 10 }}>
           <CheckCircleRoundedIcon sx={{ fontSize: 64, color: ACCENT, mb: 2, filter: `drop-shadow(0 0 16px ${ACCENT})` }} />
@@ -117,7 +117,7 @@ export default function EmployeeKycQueue() {
         </Box>
       )}
 
-      {/* ── Table ── */}
+      {/* Table */}
       {!loading && !error && customers.length > 0 && (
         <TableContainer
           component={Paper}
@@ -208,7 +208,7 @@ export default function EmployeeKycQueue() {
         </TableContainer>
       )}
 
-      {/* ── Snackbar ── */}
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}
