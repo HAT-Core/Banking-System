@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box, Typography, TextField, Button,
   Alert, CircularProgress, Snackbar,
+  MenuItem, Select, FormControl, InputLabel, FormHelperText,
 } from '@mui/material';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import InfoOutlinedIcon     from '@mui/icons-material/InfoOutlined';
 import api from '../utils/api';
 
 const ACCENT = '#9FFF98';
+const MAX_LOAN_AMOUNT = 3_000_000;
 
-// Reusable MUI dark-theme field style
 const fieldSx = {
   '& .MuiOutlinedInput-root': {
     color: '#fff',
@@ -25,6 +26,14 @@ const fieldSx = {
 };
 
 export default function EmployeeCreateLoan() {
+  const [loanTypes, setLoanTypes] = useState([]);
+
+  useEffect(() => {
+    api.get('/loans/types')
+      .then(res => setLoanTypes(res.data))
+      .catch(() => setLoanTypes([]));
+  }, []);
+
   const [form, setForm] = useState({
     accountId:       '',
     loanTypeId:      '',
@@ -38,10 +47,20 @@ export default function EmployeeCreateLoan() {
   const handleChange = (e) =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  // Derived: monthly installment preview
+  
+  const selectedType = loanTypes.find(lt => lt.loan_type_id === form.loanTypeId);
+  const maxMonths = selectedType ? selectedType.max_years * 12 : null;
+
+  
+  const interestRate = selectedType ? parseFloat(selectedType.interest_rate) : 0;
+  const years = form.durationMonths ? Number(form.durationMonths) / 12 : 0;
+  const totalInterest = form.amount && selectedType
+    ? Number(form.amount) * (interestRate / 100) * years
+    : 0;
+  const totalRepayable = form.amount ? Number(form.amount) + totalInterest : 0;
   const monthlyAmount =
-    form.amount && form.durationMonths && Number(form.durationMonths) > 0
-      ? (Number(form.amount) / Number(form.durationMonths)).toFixed(2)
+    form.amount && form.durationMonths && Number(form.durationMonths) > 0 && selectedType
+      ? (totalRepayable / Number(form.durationMonths)).toFixed(2)
       : null;
 
   const handleSubmit = async () => {
@@ -57,8 +76,16 @@ export default function EmployeeCreateLoan() {
       setError('Loan amount must be greater than zero.');
       return;
     }
-    if (Number(durationMonths) < 1 || Number(durationMonths) > 60) {
-      setError('Duration must be between 1 and 60 months.');
+    if (Number(amount) > MAX_LOAN_AMOUNT) {
+      setError(`Loan amount cannot exceed PKR ${MAX_LOAN_AMOUNT.toLocaleString('en-PK')}.`);
+      return;
+    }
+    if (!maxMonths) {
+      setError('Please select a valid loan type.');
+      return;
+    }
+    if (Number(durationMonths) < 1 || Number(durationMonths) > maxMonths) {
+      setError(`Duration must be between 1 and ${maxMonths} months for this loan type.`);
       return;
     }
 
@@ -121,16 +148,29 @@ export default function EmployeeCreateLoan() {
               helperText="The account_id belonging to the customer receiving the loan"
             />
 
-            <TextField
-              label="Loan Type ID"
-              name="loanTypeId"
-              value={form.loanTypeId}
-              onChange={handleChange}
-              type="number"
-              fullWidth
-              sx={fieldSx}
-              helperText="e.g. 1 = Personal Loan — check System Catalogs for available types"
-            />
+            <FormControl fullWidth sx={fieldSx}>
+              <InputLabel>Loan Type</InputLabel>
+              <Select
+                label="Loan Type"
+                name="loanTypeId"
+                value={form.loanTypeId}
+                onChange={handleChange}
+                sx={{ color: '#fff', borderRadius: '12px', background: 'rgba(255,255,255,0.04)' }}
+                MenuProps={{ PaperProps: { sx: { background: '#1a1a1a', color: '#fff' } } }}
+              >
+                {loanTypes.length === 0 && (
+                  <MenuItem disabled value=""><em>Loading…</em></MenuItem>
+                )}
+                {loanTypes.map(lt => (
+                  <MenuItem key={lt.loan_type_id} value={lt.loan_type_id}>
+                    {lt.type_name} — {lt.interest_rate}% interest, max {lt.max_years} yrs
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText sx={{ color: 'rgba(255,255,255,0.3)' }}>
+                Loan types are fetched live from the database
+              </FormHelperText>
+            </FormControl>
 
             <TextField
               label="Loan Amount (PKR)"
@@ -140,6 +180,8 @@ export default function EmployeeCreateLoan() {
               type="number"
               fullWidth
               sx={fieldSx}
+              inputProps={{ min: 1, max: MAX_LOAN_AMOUNT }}
+              helperText={`Maximum PKR ${MAX_LOAN_AMOUNT.toLocaleString('en-PK')}`}
             />
 
             <TextField
@@ -150,7 +192,12 @@ export default function EmployeeCreateLoan() {
               type="number"
               fullWidth
               sx={fieldSx}
-              helperText="Minimum 1, maximum 60 months"
+              inputProps={{ min: 1, max: maxMonths || undefined }}
+              helperText={
+                maxMonths
+                  ? `Minimum 1, maximum ${maxMonths} months (${selectedType.max_years} yrs) for this loan type`
+                  : 'Select a loan type first to see duration limits'
+              }
             />
 
             {/* Installment Preview */}
@@ -168,11 +215,25 @@ export default function EmployeeCreateLoan() {
                   per month × {form.durationMonths} months
                 </Typography>
 
-                <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Total Principal</Typography>
-                  <Typography sx={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
-                    PKR {Number(form.amount).toLocaleString('en-PK', { minimumFractionDigits: 2 })}
-                  </Typography>
+                <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Principal</Typography>
+                    <Typography sx={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
+                      PKR {Number(form.amount).toLocaleString('en-PK', { minimumFractionDigits: 2 })}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Interest ({interestRate}% p.a.)</Typography>
+                    <Typography sx={{ fontSize: 13, fontWeight: 600, color: '#F59E0B' }}>
+                      + PKR {totalInterest.toLocaleString('en-PK', { minimumFractionDigits: 2 })}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 1, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>Total Repayable</Typography>
+                    <Typography sx={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>
+                      PKR {totalRepayable.toLocaleString('en-PK', { minimumFractionDigits: 2 })}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
             )}

@@ -35,7 +35,19 @@ const createLoan = async (req, res) => {
         `);
 
         const newLoanId = loanResult.recordset[0].loan_id;
-        const installmentAmount = (amount / durationMonths).toFixed(2);
+
+        
+        const rateRequest = new sql.Request(transaction);
+        rateRequest.input('loanTypeId', sql.Int, loanTypeId);
+        const rateResult = await rateRequest.query(`
+            SELECT interest_rate FROM loan_type WHERE loan_type_id = @loanTypeId
+        `);
+        const interestRate = parseFloat(rateResult.recordset[0].interest_rate);
+
+        // Simple interest: Total = principal + (principal × rate/100 × years)
+        const years = durationMonths / 12;
+        const totalRepayable = amount + (amount * (interestRate / 100) * years);
+        const installmentAmount = (totalRepayable / durationMonths).toFixed(2);
 
         for (let i = 1; i <= durationMonths; i++) {
             const instRequest = new sql.Request(transaction);
@@ -200,4 +212,19 @@ const getLoanInstallments = async (req, res) => {
     }
 };
 
-module.exports = { createLoan, payInstallment, getMyLoans, getLoanInstallments };
+const getLoanTypes = async (req, res) => {
+    try {
+        const request = new sql.Request();
+        const result = await request.query(`
+            SELECT loan_type_id, type_name, interest_rate, max_years
+            FROM loan_type
+            ORDER BY type_name ASC
+        `);
+        res.status(200).json(result.recordset);
+    } catch (error) {
+        console.error("Get loan types error:", error);
+        res.status(500).json({ message: "Server error. Could not retrieve loan types." });
+    }
+};
+
+module.exports = { createLoan, payInstallment, getMyLoans, getLoanInstallments, getLoanTypes };
