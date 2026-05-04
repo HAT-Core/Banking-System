@@ -20,12 +20,7 @@ import AccountStatement from './pages/customer/AccountStatement';
 import EmployeeLayout      from './pages/employee/EmployeeLayout';
 import EmployeeKycQueue    from './pages/employee/EmployeeKycQueue';
 import EmployeeCreateLoan  from './pages/employee/EmployeeCreateLoan';
-import CustomerLoans from './pages/customer/CustomerLoans';
-import CustomerBilling from './pages/customer/CustomerBilling';
 
-import EmployeeLayout from './pages/employee/EmployeeLayout';
-import EmployeeKycQueue from './pages/employee/EmployeeKycQueue';
-import EmployeeCreateLoan from './pages/employee/EmployeeCreateLoan';
 import EmployeeBranchTeller from './pages/employee/EmployeeBranchTeller';
 
 function App() {
