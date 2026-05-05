@@ -7,6 +7,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import PointOfSaleRoundedIcon from '@mui/icons-material/PointOfSaleRounded';
 import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import AddCardRoundedIcon from '@mui/icons-material/AddCardRounded';
 
 const ACCENT       = '#9FFF98';
 const ACCENT_DIM   = 'rgba(159,255,152,0.12)';
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
   { label: 'Create Loan',        path: '/employee/loans/create',  icon: <AccountBalanceRoundedIcon fontSize="small" /> },
   { label: 'Branch Teller',      path: '/employee/teller',        icon: <PointOfSaleRoundedIcon fontSize="small" /> },
   { label: 'Delinquent Accounts',path: '/employee/delinquent',    icon: <WarningAmberRoundedIcon fontSize="small" /> },
+  { label: 'Open Account', path: '/employee/open-account', icon: <AddCardRoundedIcon fontSize="small" /> },
 ];
 
 export default function EmployeeLayout() {

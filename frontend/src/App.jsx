@@ -18,12 +18,12 @@ import Transfers from './pages/customer/Transfers';
 import CustomerLoans      from './pages/customer/CustomerLoans';
 import CustomerBilling    from './pages/customer/CustomerBilling';
 import AccountStatement from './pages/customer/AccountStatement';
+import EmployeeOpenAccount from './pages/employee/EmployeeOpenAccount';
 
 import EmployeeLayout      from './pages/employee/EmployeeLayout';
 import EmployeeKycQueue    from './pages/employee/EmployeeKycQueue';
 import EmployeeCreateLoan  from './pages/employee/EmployeeCreateLoan';
 import EmployeeDelinquent  from './pages/employee/EmployeeDelinquent';
-
 import EmployeeBranchTeller from './pages/employee/EmployeeBranchTeller';
 
 function App() {
@@ -64,6 +64,7 @@ function App() {
           <Route path="loans/create" element={<EmployeeCreateLoan />} />
           <Route path="teller" element={<EmployeeBranchTeller />} />
           <Route path="delinquent" element={<EmployeeDelinquent />} />
+          <Route path="open-account" element={<EmployeeOpenAccount />} />
         </Route>
         </Route>
 
