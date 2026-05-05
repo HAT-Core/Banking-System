@@ -61,6 +61,21 @@ const createLoan = async (req, res) => {
             `);
         }
 
+        // Credit loan amount to customer's account
+        const creditReq = new sql.Request(transaction);
+        creditReq.input('amount',    sql.Decimal(15, 2), amount);
+        creditReq.input('accountId', sql.Int,            accountId);
+        await creditReq.query(`UPDATE account SET balance = balance + @amount WHERE account_id = @accountId`);
+
+        // Log it as a transaction
+        const loanTxReq = new sql.Request(transaction);
+        loanTxReq.input('accountId', sql.Int,            accountId);
+        loanTxReq.input('amount',    sql.Decimal(15, 2), amount);
+        await loanTxReq.query(`
+            INSERT INTO transactions (from_account, to_account, amount, transaction_type, status, transaction_date)
+            VALUES (NULL, @accountId, @amount, 'loan', 'success', GETDATE())
+        `);
+
         await transaction.commit();
         res.status(201).json({ message: "Loan successfully created and installments generated." });
 
