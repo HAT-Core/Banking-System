@@ -208,7 +208,7 @@ export default function AdminEmployees() {
               <TextField name="lastName" onChange={handleChange} value={formData.lastName} label="Last Name" fullWidth size="small" sx={inputSx} />
             </Box>
             <TextField name="username" onChange={handleChange} value={formData.username} label="Username" fullWidth size="small" sx={inputSx} />
-            <TextField name="password" onChange={handleChange} value={formData.password} label="Temporary Password" type="password" fullWidth size="small" sx={inputSx} />
+            <TextField name="password" onChange={handleChange} value={formData.password} label="Password" type="password" fullWidth size="small" sx={inputSx} />
             <Box sx={{display: 'flex', gap: 2 }}>
               <TextField name="cnic" onChange={handleChange} value={formData.cnic} label="CNIC (without dashes)" placeholder="35201xxxxxxxx" inputProps={{maxLength: 13, inputMode: 'numeric', pattern: '[0-9]*' }} fullWidth size="small" sx={inputSx} />
               <TextField name="phone" onChange={handleChange} value={formData.phone} label="Phone Number" placeholder="03xxxxxxxxx" inputProps={{maxLength: 11, inputMode: 'numeric', pattern: '[0-9]*' }} fullWidth size="small" sx={inputSx} />
