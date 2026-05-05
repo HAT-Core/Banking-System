@@ -110,9 +110,30 @@ const payInstallment = async (req, res) => {
             return res.status(403).json({ message: "Forbidden: You do not own this loan." });
         }
 
-        if (status !== 'pending') {
+        // Ensure this is the earliest unpaid installment on the loan
+        const nextDueRequest = new sql.Request(transaction);
+        nextDueRequest.input('installmentId', sql.Int, installmentId);
+        const nextDueResult = await nextDueRequest.query(`
+            SELECT TOP 1 i2.installment_id
+            FROM installment i2
+            JOIN loan l2 ON i2.loan_id = l2.loan_id
+            JOIN installment i1 ON i1.loan_id = l2.loan_id
+            WHERE i1.installment_id = @installmentId
+              AND i2.status IN ('pending', 'overdue')
+            ORDER BY i2.due_date ASC
+        `);
+
+        if (
+            nextDueResult.recordset.length === 0 ||
+            nextDueResult.recordset[0].installment_id !== parseInt(installmentId)
+        ) {
             await transaction.rollback();
-            return res.status(400).json({ message: "Installment is already paid or overdue." });
+            return res.status(400).json({ message: "You must pay the earliest outstanding installment first." });
+        }
+
+        if (status === 'paid') {
+            await transaction.rollback();
+            return res.status(400).json({ message: "This installment has already been paid." });
         }
 
         if (balance < amount) {

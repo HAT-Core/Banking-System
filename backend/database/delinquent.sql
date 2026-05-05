@@ -14,20 +14,20 @@ GO
 CREATE OR ALTER VIEW delinquent_accounts_view AS
 SELECT
     a.account_id,
-    a.status                                            AS account_status,
+    a.status AS account_status,
     a.balance,
     u.first_name,
     u.last_name,
     u.phone,
     u.cnic,
-    COUNT(i.installment_id)                             AS overdue_count,
-    SUM(i.amount)                                       AS total_overdue_amount,
-    MIN(i.due_date)                                     AS earliest_overdue_date
+    COUNT(i.installment_id) AS overdue_count,
+    SUM(i.amount) AS total_overdue_amount,
+    MIN(i.due_date) AS earliest_overdue_date
 FROM installment i
-JOIN loan       l  ON i.loan_id       = l.loan_id
-JOIN account    a  ON l.account_id    = a.account_id
-JOIN customer   c  ON a.customer_id   = c.customer_id
-JOIN user_account u ON c.user_id      = u.user_id
+JOIN loan l  ON i.loan_id = l.loan_id
+JOIN account a  ON l.account_id = a.account_id
+JOIN customer c  ON a.customer_id = c.customer_id
+JOIN user_account u ON c.user_id = u.user_id
 WHERE i.status = 'overdue'
 GROUP BY
     a.account_id, a.status, a.balance,

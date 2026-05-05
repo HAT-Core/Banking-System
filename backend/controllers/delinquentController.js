@@ -1,7 +1,5 @@
 const { sql } = require('../config/db');
 
-// Call sp_mark_overdue_installments then return delinquent accounts
-// filtered by a minimum overdue count threshold (default 1).
 const getDelinquentAccounts = async (req, res) => {
     try {
         if (req.user.role !== 'employee' && req.user.role !== 'admin') {
