@@ -13,6 +13,7 @@ const loanRoutes = require('./routes/loanRoutes');
 const billRoutes = require('./routes/billRoutes');
 const statementRoutes = require('./routes/statementRoutes');
 const delinquentRoutes = require('./routes/delinquentRoutes');
+const accountOpeningRoutes = require('./routes/accountOpeningRoutes');
 
 const cors = require('cors');
 const app = express();
@@ -31,6 +32,7 @@ app.use('/api/loans', loanRoutes);
 app.use('/api/bills', billRoutes);
 app.use('/api/statements', statementRoutes);
 app.use('/api/delinquent', delinquentRoutes);
+app.use('/api/account-opening', accountOpeningRoutes);
 
 connectDB();
 runScheduledTransfers();
