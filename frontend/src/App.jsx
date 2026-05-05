@@ -22,6 +22,7 @@ import AccountStatement from './pages/customer/AccountStatement';
 import EmployeeLayout      from './pages/employee/EmployeeLayout';
 import EmployeeKycQueue    from './pages/employee/EmployeeKycQueue';
 import EmployeeCreateLoan  from './pages/employee/EmployeeCreateLoan';
+import EmployeeDelinquent  from './pages/employee/EmployeeDelinquent';
 
 import EmployeeBranchTeller from './pages/employee/EmployeeBranchTeller';
 
@@ -62,6 +63,7 @@ function App() {
           <Route path="kyc" element={<EmployeeKycQueue />} />
           <Route path="loans/create" element={<EmployeeCreateLoan />} />
           <Route path="teller" element={<EmployeeBranchTeller />} />
+          <Route path="delinquent" element={<EmployeeDelinquent />} />
         </Route>
         </Route>
 

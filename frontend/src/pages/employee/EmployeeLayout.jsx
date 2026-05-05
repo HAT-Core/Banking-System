@@ -6,6 +6,7 @@ import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import PointOfSaleRoundedIcon from '@mui/icons-material/PointOfSaleRounded';
 import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 
 const ACCENT       = '#9FFF98';
 const ACCENT_DIM   = 'rgba(159,255,152,0.12)';
@@ -13,9 +14,10 @@ const ACCENT_BORDER= 'rgba(159,255,152,0.2)';
 const ACCENT_GLOW  = 'rgba(159,255,152,0.35)';
 
 const NAV_ITEMS = [
-  { label: 'KYC Verification', path: '/employee/kyc',          icon: <VerifiedUserRoundedIcon fontSize="small" /> },
-  { label: 'Create Loan',      path: '/employee/loans/create',  icon: <AccountBalanceRoundedIcon fontSize="small" /> },
-  { label: 'Branch Teller',    path: '/employee/teller',        icon: <PointOfSaleRoundedIcon fontSize="small" /> },
+  { label: 'KYC Verification',   path: '/employee/kyc',           icon: <VerifiedUserRoundedIcon fontSize="small" /> },
+  { label: 'Create Loan',        path: '/employee/loans/create',  icon: <AccountBalanceRoundedIcon fontSize="small" /> },
+  { label: 'Branch Teller',      path: '/employee/teller',        icon: <PointOfSaleRoundedIcon fontSize="small" /> },
+  { label: 'Delinquent Accounts',path: '/employee/delinquent',    icon: <WarningAmberRoundedIcon fontSize="small" /> },
 ];
 
 export default function EmployeeLayout() {
